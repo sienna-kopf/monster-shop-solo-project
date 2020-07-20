@@ -4,9 +4,14 @@ class UsersController < ApplicationController
 
   def create
     @new_user = User.create(user_params)
-    flash[:success] = "Hello, #{@new_user.name} You are now registered and logged in"
-    session[:user_id] = @new_user.id
-    redirect_to "/profile"
+    if @new_user.save
+      flash[:success] = "Hello, #{@new_user.name} You are now registered and logged in"
+      session[:user_id] = @new_user.id
+      redirect_to "/profile"
+    else
+      flash[:error] = @new_user.errors.full_messages.uniq.to_sentence
+      redirect_to "/register/new"
+    end
   end
 
   def show
