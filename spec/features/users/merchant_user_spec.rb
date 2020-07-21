@@ -14,7 +14,7 @@ RSpec.describe "as a merchant level user" do
       expect(current_path).to eq("/merchant/dashboard")
     end
 
-    xit "does not see link to merchant dashboard when logged in as default user" do
+    it "does not see link to merchant dashboard when logged in as default user" do
       user = User.create(name: "Bob", role: 1)
 
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
