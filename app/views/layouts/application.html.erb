@@ -17,7 +17,7 @@
       <% if current_user %>
       <%= link_to "Profile", "/profile" %>
       <%= link_to "Log Out", "/logout" %>
-        <% if current_user.role == 1 %>
+        <% if current_user.role == "merchant" %>
           <%= link_to "Dashboard", "/merchant" %>
         <% end %>
       <% else %>
