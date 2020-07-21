@@ -39,7 +39,8 @@ RSpec.describe "as a new user" do
       visit "/register/new"
 
       click_on "Register User"
-      expect(current_path).to eq("/register/new")
+
+      expect(current_path).to eq("/register")
 
       expect(page).to have_content("Name can't be blank")
       expect(page).to have_content("Address can't be blank")
@@ -48,6 +49,45 @@ RSpec.describe "as a new user" do
       expect(page).to have_content("Zip can't be blank")
       expect(page).to have_content("Email can't be blank")
       expect(page).to have_content("Password can't be blank")
+    end
+  end
+
+  describe "it returns fields with information on error" do
+    it "fills in all fields, and says email is invalid" do
+
+      visit "/register/new"
+
+      fill_in :name, with: "Nick E."
+      fill_in :address, with: "123 Maine St."
+      fill_in :city, with: "Denver"
+      fill_in :state, with: "Colorado"
+      fill_in :zip, with: "80218"
+      fill_in :email, with: "123@gmail.com"
+      fill_in :password, with: "secure-password"
+      fill_in :password_confirmation, with: "secure-password"
+
+      click_on "Register User"
+
+      visit "/register/new"
+
+      fill_in :name, with: "Timmy"
+      fill_in :address, with: "123 Maine St."
+      fill_in :city, with: "Denver"
+      fill_in :state, with: "Colorado"
+      fill_in :zip, with: "80218"
+      fill_in :email, with: "123@gmail.com"
+      fill_in :password, with: "secure-password"
+      fill_in :password_confirmation, with: "secure-password"
+
+      click_on "Register User"
+
+      expect(page).to have_field('Name', with: 'Timmy')
+      expect(page).to have_field('Address', with: '123 Maine St.')
+      expect(page).to have_field('City', with: 'Denver')
+      expect(page).to have_field('State', with: 'Colorado')
+      expect(page).to have_field('Zip', with: '80218')
+
+      expect(page).to have_content("Email has already been taken")
     end
   end
 end
