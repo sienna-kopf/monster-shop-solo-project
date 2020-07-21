@@ -10,20 +10,27 @@
 
   <body>
     <nav class = "topnav">
-      <%= link_to "Home", "/" %>
-      <%= link_to "All Merchants", "/merchants"%>
-      <%= link_to "All Items", "/items" %>
-      <%= link_to "Cart: #{cart.total_items}", "/cart" %>
-      <% if current_user %>
-      <%= link_to "Profile", "/profile" %>
-      <%= link_to "Log Out", "/logout" %>
-        <% if current_user.role == "merchant" %>
-          <%= link_to "Dashboard", "/merchant/dashboard" %>
-        <% end %>
-      <% else %>
-        <%= link_to "Login", "/login" %>
-        <%= link_to "Register", "/register/new" %>
-      <% end %>
+    <%= link_to "Home", "/" %>
+    <%= link_to "All Merchants", "/merchants"%>
+    <%= link_to "All Items", "/items" %>
+
+     <% if current_user %>
+       <%= link_to "Profile", "/profile" %>
+       <%= link_to "Log Out", "/logout" %>
+       <% if current_user.role == "merchant" %>
+         <%= link_to "Dashboard", "/merchant/dashboard" %>
+         <%= link_to "Cart: #{cart.total_items}", "/cart" %>
+       <% elsif current_user.role == "admin" %>
+         <%= link_to "Dashboard", "/admin/dashboard" %>
+         <%= link_to "All Users", "/admin/users" %>
+       <% else %>
+         <%= link_to "Cart: #{cart.total_items}", "/cart" %>
+       <% end %>
+     <% else %>
+       <%= link_to "Login", "/login" %>
+       <%= link_to "Register", "/register/new" %>
+       <%= link_to "Cart: #{cart.total_items}", "/cart" %>
+     <% end %>
     </nav>
     <% if current_user %>
       <p>Logged in as <%= "#{current_user.name}"%></p>
