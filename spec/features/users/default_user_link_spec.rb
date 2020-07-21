@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "as a defauly user" do
+RSpec.describe "as a default user" do
   describe "it views any page" do
     it "and sees links to profile and log out, does not see link to log in or register and says logged in message" do
       user = User.create(name: "Nick", role: 0)
