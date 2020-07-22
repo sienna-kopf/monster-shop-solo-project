@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
 
   def create
     if current_user
-      if current_user.authenticate(params[:password])
+      if current_user.authenticate(params[:password]) && current_user.email == params[:email]
         session[:user_id] = current_user.id
         flash[:success] = "You are now successfully logged in as #{current_user.name}"
         if current_admin?
