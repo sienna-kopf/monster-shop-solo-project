@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   post "/register", to: "users#create"
 
   get "/login", to: "sessions#new"
+  post "/login", to: "sessions#create"
 
   get "/profile", to: "users#show"
 
@@ -49,4 +50,6 @@ Rails.application.routes.draw do
     get "/dashboard", to: "dashboard#index"
     get "/users", to: "users#index"
   end
+
+
 end
