@@ -67,6 +67,21 @@ RSpec.describe "User login" do
         expect(page).to have_content("Bad Credentials. Try Again!")
         expect(current_path).to eq("/login")
       end
+
+      it "displays a flash message and redirects user to login page" do
+        user = User.create(name: "Megan", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "12345@gmail.com", password: "password", role: 2)
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+
+        visit "/login"
+
+        fill_in :email, with: "1999@gmail.com"
+        fill_in :password, with: "password"
+
+        click_on "Log In"
+
+        expect(page).to have_content("Bad Credentials. Try Again!")
+        expect(current_path).to eq("/login")
+      end
     end
 
     describe "visitor tries to login without registering" do
