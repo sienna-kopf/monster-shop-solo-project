@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  # before_action :check_signed_in
+
   def new
   end
 
@@ -23,4 +25,21 @@ class SessionsController < ApplicationController
       render :new
     end
   end
+
+  # private
+
+  # def check_signed_in
+  #   if current_user
+  #     redirect_to "/profile"
+  #     flash[:error] = "Already Logged In."
+  #   elsif current_merchant?
+  #     redirect_to "/merchant/dashboard"
+  #     flash[:error] = "Already Logged In."
+  #   elsif current_admin?
+  #     redirect_to "/admin/dashboard"
+  #     flash[:error] = "Already Logged In."
+  #   else
+  #     redirect_to root_path
+  #   end
+  # end
 end
