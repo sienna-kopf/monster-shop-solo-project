@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "as a default user" do
+RSpec.describe "as a visitor" do
   describe "I try to view pages starting with /merchant, /admin, /profile" do
     it "displays a 404 error" do
       visit "/merchant/dashboard"
