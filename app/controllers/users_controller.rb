@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   
-  before_action :require_user
+  before_action :require_user, only: [:show]
 
   def new
     
@@ -20,7 +20,6 @@ class UsersController < ApplicationController
   end
 
   def show
-    require_user
     @user = User.find(session[:user_id])
   end
 
@@ -31,6 +30,6 @@ class UsersController < ApplicationController
   end
   
   def require_user
-    render file: "/public/404" unless current_merchant?
+    render file: "/public/404" unless current_user
   end
 end
