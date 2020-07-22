@@ -29,6 +29,6 @@ class UsersController < ApplicationController
   end
 
   def require_user
-    render file: "/public/404" unless current_user
+    render file: "/public/404" unless current_default?
   end
 end
