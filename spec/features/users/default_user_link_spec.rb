@@ -17,4 +17,22 @@ RSpec.describe "as a default user" do
       expect(page).to have_content("Logged in as #{user.name}")
     end
   end
+
+
+  describe "I try to view pages starting with /merchant or /admin" do
+    it "it displays a 404 error" do
+      default_user = User.create(name: "Tim", role: 1)
+
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(default_user)
+
+      visit "/merchant/dashboard"
+      expect(page).to have_content("The page you were looking for doesn't exist.")
+
+      visit "/admin/users"
+      expect(page).to have_content("The page you were looking for doesn't exist.")
+
+      visit "/admin/dashboard"
+      expect(page).to have_content("The page you were looking for doesn't exist.")
+    end
+  end
 end
