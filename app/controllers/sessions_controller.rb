@@ -1,6 +1,4 @@
 class SessionsController < ApplicationController
-  # before_action :require_user, only: [:create]
-
   def new
   end
 
@@ -25,10 +23,4 @@ class SessionsController < ApplicationController
       render :new
     end
   end
-
-  # private
-  #
-  # def require_user
-  #   render :new unless current_default?
-  # end
 end
