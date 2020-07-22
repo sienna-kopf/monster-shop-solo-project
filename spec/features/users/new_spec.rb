@@ -3,8 +3,10 @@ require 'rails_helper'
 RSpec.describe "as a new user" do
   describe "it can fill out a form to register" do
     it "fills in all fields" do
-      visit "/register/new"
-
+      visit '/'
+      click_on "Register"
+      # visit "/register/new"
+  
       fill_in :name, with: "Nick E."
       fill_in :address, with: "123 Maine St."
       fill_in :city, with: "Denver"
