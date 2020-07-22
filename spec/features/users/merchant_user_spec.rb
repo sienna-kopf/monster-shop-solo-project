@@ -24,4 +24,18 @@ RSpec.describe "as a merchant level user" do
       expect(page).to_not have_link("Dashboard")
     end
   end
+
+  describe "I try to view pages starting with /admin" do
+    it "it displays a 404 error" do
+      merchant = User.create(name: "Sarah", role: 2)
+
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(merchant)
+
+      visit "/admin/users"
+      expect(page).to have_content("The page you were looking for doesn't exist.")
+      
+      visit "/admin/dashboard"
+      expect(page).to have_content("The page you were looking for doesn't exist.")
+    end
+  end
 end
