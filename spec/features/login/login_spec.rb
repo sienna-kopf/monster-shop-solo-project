@@ -129,4 +129,105 @@ RSpec.describe "User login" do
       end
     end
   end
+  
+  describe "as a registered user" do
+    it "visit logout path, get redirected to home page, show logout flash message, and delete items in the shopping cart" do
+      tim = User.create(name: "Tim", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "myemail@gmail.com", password: "password123", role: 1)
+      bike_shop = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
+      tire = bike_shop.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12)
+
+      visit "/login"
+      
+      fill_in :email, with: "myemail@gmail.com"
+      fill_in :password, with: "password123"
+      
+      click_on "Log In"
+      
+      within 'nav' do
+        expect(page).to have_content("Cart: 0")
+      end
+      
+      visit "/merchants/#{bike_shop.id}"
+      
+      click_link "All Meg's Bike Shop Items"
+      
+      click_link "Gatorskins"
+
+      click_on "Add To Cart"
+      
+      within 'nav' do
+        expect(page).to have_content("Cart: 1")
+      end
+
+      visit "/logout"
+      
+      within 'nav' do
+        expect(page).to have_content("Cart: 0")
+      end
+      
+      expect(page).to have_content("You have successfully logged out.")
+      expect(current_path).to eq("/")
+    end
+  end
+
+  describe "as a merchant user" do
+    it "visit logout path, get redirected to home page, show logout flash message, and delete items in the shopping cart" do
+      tim = User.create(name: "Tim", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "myemail@gmail.com", password: "password123", role: 2)
+      bike_shop = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
+      tire = bike_shop.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12)
+
+      visit "/login"
+      
+      fill_in :email, with: "myemail@gmail.com"
+      fill_in :password, with: "password123"
+      
+      click_on "Log In"
+      
+      within 'nav' do
+        expect(page).to have_content("Cart: 0")
+      end
+      
+      visit "/merchants/#{bike_shop.id}"
+      
+      click_link "All Meg's Bike Shop Items"
+      
+      click_link "Gatorskins"
+
+      click_on "Add To Cart"
+      
+      within 'nav' do
+        expect(page).to have_content("Cart: 1")
+      end
+
+      visit "/logout"
+      
+      within 'nav' do
+        expect(page).to have_content("Cart: 0")
+      end
+      
+      expect(page).to have_content("You have successfully logged out.")
+      expect(current_path).to eq("/"
+    end
+  end
+  
+  describe "as an admin user" do
+    it "visit logout path, get redirected to home page, show logout flash message, and delete items in the shopping cart" do
+      tim = User.create(name: "Tim", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "myemail@gmail.com", password: "password123", role: 1)
+      bike_shop = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
+      tire = bike_shop.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12)
+
+      visit "/login"
+      
+      fill_in :email, with: "myemail@gmail.com"
+      fill_in :password, with: "password123"
+      
+      click_on "Log In"
+      
+      visit "/logout"
+      
+      expect(page).to have_content("You have successfully logged out.")
+      expect(current_path).to eq("/")
+    end
+  end
 end
+
