@@ -39,6 +39,7 @@ Rails.application.routes.draw do
 
   get "/login", to: "sessions#new"
   post "/login", to: "sessions#create"
+  get "/logout", to: "sessions#destroy"
 
   get "/profile", to: "users#show"
 
@@ -51,5 +52,7 @@ Rails.application.routes.draw do
     get "/users", to: "users#index"
   end
 
+  
+  
 
 end
