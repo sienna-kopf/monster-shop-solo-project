@@ -78,11 +78,9 @@ RSpec.describe "Items Index Page" do
         expect(page).to_not have_content(@tire.name)
         expect(page).to_not have_content(@dog_bone.name)
 
-        within(".image-link") do
-          find(:xpath, "//a[contains(@href,'/items/#{@pull_toy.id}')]").click
+        within('#image-link') do
+          find(:xpath, "//a/img[@alt='#{@pull_toy.name}']/..").click
         end
-
-        save_and_open_page
 
         expect(current_path).to eq("/items/#{@pull_toy.id}")
       end
@@ -100,7 +98,9 @@ RSpec.describe "Items Index Page" do
         expect(page).to_not have_content(@tire.name)
         expect(page).to_not have_content(@dog_bone.name)
 
-        find(".image-#{@pull_toy.id}").click
+        within('#image-link') do
+          find(:xpath, "//a/img[@alt='#{@pull_toy.name}']/..").click
+        end
 
         expect(current_path).to eq("/items/#{@pull_toy.id}")
       end
@@ -118,7 +118,9 @@ RSpec.describe "Items Index Page" do
         expect(page).to_not have_content(@tire.name)
         expect(page).to_not have_content(@dog_bone.name)
 
-        find(".image-#{@pull_toy.id}").click
+        within('#image-link') do
+          find(:xpath, "//a/img[@alt='#{@pull_toy.name}']/..").click
+        end
 
         expect(current_path).to eq("/items/#{@pull_toy.id}")
       end
@@ -136,8 +138,10 @@ RSpec.describe "Items Index Page" do
         expect(page).to_not have_content(@tire.name)
         expect(page).to_not have_content(@dog_bone.name)
 
-        find(".image-#{@pull_toy.id}").click
-
+        within('#image-link') do
+          find(:xpath, "//a/img[@alt='#{@pull_toy.name}']/..").click
+        end
+        
         expect(current_path).to eq("/items/#{@pull_toy.id}")
       end
     end
