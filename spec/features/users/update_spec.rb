@@ -42,4 +42,43 @@ RSpec.describe "a default user" do
 
     expect(page).to have_content("Information successfully updated.")
   end
+
+  it "can update password" do
+    user = User.create(name: "Megan", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "12345@gmail.com", password: "password", role: 1)
+
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+
+    visit "/profile"
+
+    click_on "Edit Password"
+
+    expect(current_path).to eq("/users/password/edit")
+
+    expect(page).to have_field(:current_password)
+
+    expect(page).to have_field(:new_password)
+    expect(page).to have_field(:new_password_confirmation)
+
+    fill_in :current_password, with: "password"
+
+    fill_in :new_password, with: "secure-password"
+    fill_in :new_password_confirmation, with: "secure-password"
+
+    click_on "Update Password"
+
+    expect(current_path).to eq("/profile")
+
+    expect(page).to have_content("Password successfully updated.")
+    # 
+    # visit "/logout"
+    #
+    # visit "/login"
+    #
+    # fill_in :email, with: "12345@gmail.com"
+    # fill_in :password, with: "secure-password"
+    #
+    # click_on "Log In"
+    #
+    # expect(current_path).to eq("/profile")
+  end
 end
