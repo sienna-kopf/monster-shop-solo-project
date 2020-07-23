@@ -58,4 +58,92 @@ RSpec.describe "Items Index Page" do
       end
     end
   end
+
+  describe "items are enabled or disabled" do
+    before :each do
+      @meg = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
+      @brian = Merchant.create(name: "Brian's Dog Shop", address: '125 Doggo St.', city: 'Denver', state: 'CO', zip: 80210)
+
+      @tire = @meg.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12, enabled?: false)
+
+      @pull_toy = @brian.items.create(name: "Pull Toy", description: "Great pull toy!", price: 10, image: "http://lovencaretoys.com/image/cache/dog/tug-toy-dog-pull-9010_2-800x800.jpg", inventory: 32)
+      @dog_bone = @brian.items.create(name: "Dog Bone", description: "They'll love it!", price: 21, image: "https://img.chewy.com/is/image/catalog/54226_MAIN._AC_SL1500_V1534449573_.jpg", active?:false, inventory: 21, enabled?: false)
+    end
+
+    describe "a visitor visits the items index page" do
+      it "can see all enabled items and can click on image to link to item show page" do
+        visit "/items"
+
+        expect(page).to have_content(@pull_toy.name)
+        expect(page).to_not have_content(@tire.name)
+        expect(page).to_not have_content(@dog_bone.name)
+
+        within('#image-link') do
+          find(:xpath, "//a/img[@alt='#{@pull_toy.name}']/..").click
+        end
+
+        expect(current_path).to eq("/items/#{@pull_toy.id}")
+      end
+    end
+
+    describe "a default user visits the items index page" do
+      it "can see all enabled items and can click on image to link to item show page" do
+        user = User.create(name: "Nick", role: 1)
+
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+
+        visit "/items"
+
+        expect(page).to have_content(@pull_toy.name)
+        expect(page).to_not have_content(@tire.name)
+        expect(page).to_not have_content(@dog_bone.name)
+
+        within('#image-link') do
+          find(:xpath, "//a/img[@alt='#{@pull_toy.name}']/..").click
+        end
+
+        expect(current_path).to eq("/items/#{@pull_toy.id}")
+      end
+    end
+
+    describe "a merchant visits the items index page" do
+      it "can see all enabled items and can click on image to link to item show page" do
+        user = User.create(name: "Nick", role: 2)
+
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+
+        visit "/items"
+
+        expect(page).to have_content(@pull_toy.name)
+        expect(page).to_not have_content(@tire.name)
+        expect(page).to_not have_content(@dog_bone.name)
+
+        within('#image-link') do
+          find(:xpath, "//a/img[@alt='#{@pull_toy.name}']/..").click
+        end
+
+        expect(current_path).to eq("/items/#{@pull_toy.id}")
+      end
+    end
+
+    describe "an admin visits the items index page" do
+      it "can see all enabled items and can click on image to link to item show page" do
+        user = User.create(name: "Nick", role: 3)
+
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+
+        visit "/items"
+
+        expect(page).to have_content(@pull_toy.name)
+        expect(page).to_not have_content(@tire.name)
+        expect(page).to_not have_content(@dog_bone.name)
+
+        within('#image-link') do
+          find(:xpath, "//a/img[@alt='#{@pull_toy.name}']/..").click
+        end
+        
+        expect(current_path).to eq("/items/#{@pull_toy.id}")
+      end
+    end
+  end
 end
