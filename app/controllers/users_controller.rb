@@ -26,10 +26,14 @@ class UsersController < ApplicationController
   end
 
   def update
-    user = User.find_by_email(params[:email])
-    user.update(user_params)
-    flash[:success] = "Information successfully updated."
-    redirect_to "/profile"
+    current_user.update(user_params)
+    if current_user.save
+      flash[:success] = "Information successfully updated."
+      redirect_to "/profile"
+    else
+      flash[:error] = current_user.errors.full_messages.uniq.to_sentence
+      redirect_to "/users/edit"
+    end
   end
 
   private
