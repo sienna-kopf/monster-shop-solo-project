@@ -43,6 +43,31 @@ RSpec.describe "a default user" do
     expect(page).to have_content("Information successfully updated.")
   end
 
+  it "displays flash message if an update field is left blank" do
+    user = User.create(name: "Megan", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "12345@gmail.com", password: "password", role: 1)
+
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+
+    visit "/profile"
+
+    click_on "Edit Profile"
+
+    expect(current_path).to eq("/users/edit")
+
+    fill_in :name, with: ""
+    fill_in :city, with: ""
+    fill_in :state, with: "Utah"
+    fill_in :zip, with: ""
+
+    click_on "Update Profile"
+
+    expect(current_path).to eq("/users/edit")
+
+    expect(page).to have_content("Name can't be blank")
+    expect(page).to have_content("City can't be blank")
+    expect(page).to have_content("Zip can't be blank")
+  end
+
   it "can update password" do
     user = User.create(name: "Megan", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "12345@gmail.com", password: "password", role: 1)
 
@@ -69,16 +94,26 @@ RSpec.describe "a default user" do
     expect(current_path).to eq("/profile")
 
     expect(page).to have_content("Password successfully updated.")
-    # 
-    # visit "/logout"
-    #
-    # visit "/login"
-    #
-    # fill_in :email, with: "12345@gmail.com"
-    # fill_in :password, with: "secure-password"
-    #
-    # click_on "Log In"
-    #
-    # expect(current_path).to eq("/profile")
+  end
+
+  it "displays flash message if password update fields are left blank" do
+    user = User.create(name: "Megan", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "12345@gmail.com", password: "password", role: 1)
+
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+
+    visit "/profile"
+
+    click_on "Edit Password"
+
+    fill_in :current_password, with: "password"
+
+    fill_in :new_password, with: ""
+    fill_in :new_password_confirmation, with: ""
+
+    click_on "Update Password"
+
+    expect(current_path).to eq("/users/password/edit")
+
+    expect(page).to have_content("Password can't be blank")
   end
 end
