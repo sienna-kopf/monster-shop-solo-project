@@ -5,8 +5,7 @@ RSpec.describe "as a new user" do
     it "fills in all fields" do
       visit '/'
       click_on "Register"
-      # visit "/register/new"
-  
+
       fill_in :name, with: "Nick E."
       fill_in :address, with: "123 Maine St."
       fill_in :city, with: "Denver"
@@ -35,7 +34,7 @@ RSpec.describe "as a new user" do
     end
   end
 
-  describe "it can\'t fill in a form with missing fields" do
+  describe "it can't fill in a form with missing fields" do
     it 'it leaves fields blank' do
 
       visit "/register/new"
