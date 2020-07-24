@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-
   before_action :require_user, only: [:show]
 
   def new
@@ -20,6 +19,7 @@ class UsersController < ApplicationController
   end
 
   def show
+    @user = User.find_by_email(current_user.email)
   end
 
   def edit
@@ -27,8 +27,13 @@ class UsersController < ApplicationController
 
   def update
     current_user.update(user_params)
-    flash[:success] = "Information successfully updated."
-    redirect_to "/profile"
+    if current_user.save
+      flash[:success] = "Information successfully updated."
+      redirect_to "/profile"
+    else
+      flash[:error] = current_user.errors.full_messages.uniq.to_sentence
+      redirect_to "/users/edit"
+    end
   end
 
   private

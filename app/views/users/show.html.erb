@@ -1,9 +1,9 @@
-<h1>Hello <%= current_user.name %></h1>
-<p>Address: <%= current_user.address %></p>
-<p>City: <%= current_user.city %></p>
-<p>State: <%= current_user.state %></p>
-<p>Zip code: <%= current_user.zip %></p>
-<p>Email: <%= current_user.email %></p>
+<h1>Hello <%= @user.name %></h1>
+<p>Address: <%= @user.address %></p>
+<p>City: <%= @user.city %></p>
+<p>State: <%= @user.state %></p>
+<p>Zip code: <%= @user.zip %></p>
+<p>Email: <%= @user.email %></p>
 
 <%= link_to "Edit Profile", "/users/edit" %>
 <%= link_to "Edit Password", "/users/password/edit" %>
