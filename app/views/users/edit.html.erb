@@ -12,6 +12,7 @@
     <%= text_field_tag :zip, current_user.zip %><br>
     <%= label_tag :email %>
     <%= text_field_tag :email, current_user.email%><br>
+    <%= hidden_field_tag :password, current_user.password_digest%>
     <%= submit_tag "Update Profile" %>
     <% end %>
 </div>
