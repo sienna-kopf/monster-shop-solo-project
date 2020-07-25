@@ -19,28 +19,44 @@ RSpec.describe "cart index page" do
       @items_in_cart = [@paper,@tire,@pencil]
     end
 
-    it "they can increment the count of items to purchase as long as there is enough inventory" do
+    it "they can increase the amount of an item to purchase as long as there is enough inventory" do
       visit "/cart"
 
       within("#cart-item-#{@tire.id}") do
-        expect(page).to have_content("0")
-        click_on "Add"
         expect(page).to have_content("1")
-        click_on "Add"
+        click_on "Increase Amount"
         expect(page).to have_content("2")
       end
 
       within("#cart-item-#{@paper.id}") do
-        expect(page).to have_content("0")
-        click_on "Add"
         expect(page).to have_content("1")
-        click_on "Add"
+        click_on "Increase Amount"
         expect(page).to have_content("2")
-        click_on "Add"
+        click_on "Increase Amount"
         expect(page).to have_content("3")
-        click_on "Add"
-        expect(page).to have_content("No more inventory of this item!")
+        click_on "Increase Amount"
       end
+
+      expect(page).to have_content("You have exceeded the maximum inventory for #{@paper.name}!")
+    end
+
+    it "they can decrease the amount of an item & going to zero removes it from cart" do
+      visit "/cart"
+
+      within("#cart-item-#{@paper.id}") do
+        expect(page).to have_content("1")
+        click_on "Increase Amount"
+        expect(page).to have_content("2")
+      end
+
+      within("#cart-item-#{@paper.id}") do
+        click_on "Decrease Amount"
+        expect(page).to have_content("1")
+        click_on "Decrease Amount"
+      end
+
+      expect(page).to_not have_content("#{@paper.name}")
+      expect(page).to have_content("#{@tire.name}")
     end
   end
 end
