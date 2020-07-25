@@ -46,44 +46,24 @@ RSpec.describe "order index Page" do
 
         new_order = Order.last
 
-        within ".order-#{new_order.id}" do
-          expect(page).to have_content(name)
-          expect(page).to have_content(address)
-          expect(page).to have_content(city)
-          expect(page).to have_content(state)
-          expect(page).to have_content(zip)
-        end
-
-        within "#item-#{@paper.id}" do
-          expect(page).to have_link(@paper.name)
-          expect(page).to have_link("#{@paper.merchant.name}")
-          expect(page).to have_content("$#{@paper.price}")
-          expect(page).to have_content("2")
-          expect(page).to have_content("$40")
-        end
-
-        within "#item-#{@tire.id}" do
-          expect(page).to have_link(@tire.name)
-          expect(page).to have_link("#{@tire.merchant.name}")
-          expect(page).to have_content("$#{@tire.price}")
-          expect(page).to have_content("1")
-          expect(page).to have_content("$100")
-        end
-
-        within "#item-#{@pencil.id}" do
-          expect(page).to have_link(@pencil.name)
-          expect(page).to have_link("#{@pencil.merchant.name}")
-          expect(page).to have_content("$#{@pencil.price}")
-          expect(page).to have_content("1")
-          expect(page).to have_content("$2")
-        end
-
-        within "#grandtotal" do
-          expect(page).to have_content("Total: $142")
-        end
-
-        within "#datecreated" do
+        within "#date-created" do
           expect(page).to have_content(new_order.created_at)
+        end
+
+        within "#date-updated" do
+          expect(page).to have_content(new_order.updated_at)
+        end
+
+        within "#order-status" do
+          expect(page).to have_content("pending")
+        end
+
+        within "#order-quantity" do
+          expect(page).to have_content("3")
+        end
+
+        within "#grand-total" do
+          expect(page).to have_content("Total Cost: $142.00")
         end
 
         within 'nav' do
