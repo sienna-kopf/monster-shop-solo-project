@@ -1,7 +1,7 @@
 <h1>Orders for <%= @user.name %></h1>
 <% @user.orders.each do |order| %>
   <section class="order-<%= order.id %>"
-    <section class = "shipping-address">
+    <section class="shipping-address">
       <h1 align = "center">Shipping Info</h1>
       <table>
         <tr>
@@ -49,4 +49,5 @@
       <p> <%= order.created_at%></p>
     </section>
   </section>
+  <hr style="border: 2px solid #002244" />
 <% end %>
