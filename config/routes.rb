@@ -43,6 +43,7 @@ Rails.application.routes.draw do
 
   get "/profile", to: "users#show"
   get "/users/edit", to: "users#edit"
+  get "/profile/orders", to: "users#orders"
   patch "/profile", to: "users#update"
 
   get "/users/password/edit", to: "passwords#edit"

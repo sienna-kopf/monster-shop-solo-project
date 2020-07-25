@@ -35,7 +35,11 @@ class UsersController < ApplicationController
       redirect_to "/users/edit"
     end
   end
-
+  
+  def orders
+    @user = User.find(current_user.id)
+  end
+  
   private
 
   def user_params
