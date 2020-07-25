@@ -48,6 +48,9 @@ Rails.application.routes.draw do
   get "/users/password/edit", to: "passwords#edit"
   patch "/profile/password", to: "passwords#update"
 
+  put "/cart/:item_id/increase", to: "cart#increase"
+  put "/cart/:item_id/decrease", to: "cart#decrease"
+
   namespace :merchant do
     get "/dashboard", to: "dashboard#index"
   end

@@ -10,7 +10,7 @@
     <th>Quantity</th>
     <th>Subtotal</th>
   </tr>
-  <% @items.each do |item,quantity| %>
+  <% @items.each do |item, quantity| %>
     <tr id= "cart-item-<%=item.id%>">
       <td>
         <p align = "center">
@@ -31,12 +31,14 @@
       <td>
         <center>
           <p><%=quantity%></p>
+          <p><%= link_to "Increase Amount", "/cart/#{item.id}/increase", method: :put %></p>
+          <p><%= link_to "Decrease Amount", "/cart/#{item.id}/decrease",method: :put %></p>
           <p><%= link_to "Remove", "/cart/#{item.id}",method: :delete %></p>
         </center>
         </td>
       <td>
         <p><%=number_to_currency(cart.subtotal(item))%></p>
-    </td>
+      </td>
     </tr>
   <% end %>
 </table>
