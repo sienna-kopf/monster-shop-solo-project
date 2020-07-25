@@ -1,11 +1,3 @@
-# When I fill out all information on the new order page
-# And click on 'Create Order'
-# An order is created and saved in the database
-# And I am redirected to that order's show page with the following information:
-#
-# - Details of the order:
-
-# - the date when the order was created
 RSpec.describe("Order Creation") do
   describe "When I check out from my cart" do
     before(:each) do
@@ -32,7 +24,7 @@ RSpec.describe("Order Creation") do
       click_on "Checkout"
     end
 
-    xit 'I can create a new order' do
+    it 'I can create a new order' do
       name = "Bert"
       address = "123 Sesame St."
       city = "NYC"
@@ -51,7 +43,7 @@ RSpec.describe("Order Creation") do
 
       expect(current_path).to eq("/profile/orders")
 
-      within '.shipping-address' do
+      within ".order-#{new_order.id}" do
         expect(page).to have_content(name)
         expect(page).to have_content(address)
         expect(page).to have_content(city)
