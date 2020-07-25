@@ -1,11 +1,15 @@
 RSpec.describe("New Order Page") do
   describe "When I check out from my cart" do
     before(:each) do
+      @user = User.create(name: "Nick", role: 1)
+
       @mike = Merchant.create(name: "Mike's Print Shop", address: '123 Paper Rd.', city: 'Denver', state: 'CO', zip: 80203)
       @meg = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
       @tire = @meg.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12)
       @paper = @mike.items.create(name: "Lined Paper", description: "Great for writing on!", price: 20, image: "https://cdn.vertex42.com/WordTemplates/images/printable-lined-paper-wide-ruled.png", inventory: 3)
       @pencil = @mike.items.create(name: "Yellow Pencil", description: "You can write on paper with it!", price: 2, image: "https://images-na.ssl-images-amazon.com/images/I/31BlVr01izL._SX425_.jpg", inventory: 100)
+
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
 
       visit "/items/#{@paper.id}"
       click_on "Add To Cart"
@@ -16,6 +20,7 @@ RSpec.describe("New Order Page") do
       visit "/items/#{@pencil.id}"
       click_on "Add To Cart"
     end
+
     it "I see all the information about my current cart" do
       visit "/cart"
 
@@ -58,6 +63,32 @@ RSpec.describe("New Order Page") do
       expect(page).to have_field(:state)
       expect(page).to have_field(:zip)
       expect(page).to have_button("Create Order")
+    end
+  end
+
+  describe "As a visitor" do
+    it "It can not checkout when not logged in" do
+      mike = Merchant.create(name: "Mike's Print Shop", address: '123 Paper Rd.', city: 'Denver', state: 'CO', zip: 80203)
+
+      paper = mike.items.create(name: "Lined Paper", description: "Great for writing on!", price: 20, image: "https://cdn.vertex42.com/WordTemplates/images/printable-lined-paper-wide-ruled.png", inventory: 3)
+
+      visit "/items/#{paper.id}"
+      click_on "Add To Cart"
+
+      visit "/cart"
+      click_on "Checkout"
+
+      expect(page).to have_content("You must be a registered user to checkout!")
+
+      expect(page).to_not have_field(:name)
+      expect(page).to_not have_field(:address)
+      expect(page).to_not have_field(:city)
+      expect(page).to_not have_field(:state)
+      expect(page).to_not have_field(:zip)
+      expect(page).to_not have_button("Create Order")
+
+      expect(page).to have_link("Login")
+      expect(page).to have_link("Register")
     end
   end
 end
