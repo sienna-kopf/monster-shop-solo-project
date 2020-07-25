@@ -26,7 +26,8 @@ RSpec.describe "As a visitor" do
     end
 
     it "I can't delete a merchant that has orders" do
-      user = User.create(name: "Nick", role: 1)
+      user = User.create!(name: "Nick", address: "123 Main St", city: "Denver", state: "CO", zip: "80439", email: "myemail@email.com", password: "password", role: 1)
+
       mike = Merchant.create(name: "Mike's Print Shop", address: '123 Paper Rd.', city: 'Denver', state: 'CO', zip: 80203)
       meg = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
       brian = Merchant.create(name: "Brian's Dog Shop", address: '123 Dog Rd.', city: 'Denver', state: 'CO', zip: 80204)
@@ -65,6 +66,7 @@ RSpec.describe "As a visitor" do
       click_button "Create Order"
 
       visit "/merchants/#{meg.id}"
+
       expect(page).to_not have_link("Delete Merchant")
 
       # visit "/merchants/#{brian.id}"
