@@ -481,7 +481,7 @@ The words "log in" is a link to the login page
 ```
 
 ```
-[ ] done
+[X] done
 
 User Story 26, Registered users can check out
 
@@ -517,7 +517,7 @@ The show page template for an order can be shared between users, merchants and a
 - Admins can fulfill items on order on behalf of a merchant
 
 ```
-[ ] done
+[X] done
 
 User Story 27, User Profile displays Orders link
 
