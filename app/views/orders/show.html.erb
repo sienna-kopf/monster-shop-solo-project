@@ -45,7 +45,9 @@
   <p>Total: <%=number_to_currency(@order.grandtotal)%></p>
 </section>
 <section id="cancelorder">
+  <% if @order.status != "shipped" %>
   <p> <%= link_to "Cancel Order", "/orders/#{@order.id}/cancel"%></p></td>
+  <% end %>
 </section>
 <section id="datecreated">
   <p> <%= @order.created_at%></p>
