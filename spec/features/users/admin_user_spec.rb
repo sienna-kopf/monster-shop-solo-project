@@ -46,4 +46,86 @@ RSpec.describe "as an admin level user" do
       ## make sure we test more cart paths if they exist
     end
   end
+
+  describe "visit the admin dashboard" do
+    before :each do
+      @user_1 = User.create!(name: "Nick", address: "123 Main St", city: "Denver", state: "CO", zip: "80439", email: "myemail@email.com", password: "password", role: 1)
+
+      mike = Merchant.create(name: "Mike's Print Shop", address: '123 Paper Rd.', city: 'Denver', state: 'CO', zip: 80203)
+      meg = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
+      tire = meg.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12)
+      paper = mike.items.create(name: "Lined Paper", description: "Great for writing on!", price: 20, image: "https://cdn.vertex42.com/WordTemplates/images/printable-lined-paper-wide-ruled.png", inventory: 35)
+      pencil = mike.items.create(name: "Yellow Pencil", description: "You can write on paper with it!", price: 2, image: "https://images-na.ssl-images-amazon.com/images/I/31BlVr01izL._SX425_.jpg", inventory: 100)
+
+      @order_1 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "packaged", user_id: @user_1.id)
+
+      @order_1.item_orders.create!(item: tire, price: tire.price, quantity: 2)
+      @order_1.item_orders.create!(item: paper, price: paper.price, quantity: 3)
+
+      @user_2 = User.create(name: "Tim", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "1234@gmail.com", password: "password", role: 1)
+
+      @order_2 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'CO', zip: 17033, status: "shipped", user_id: @user_2.id)
+
+      @order_2.item_orders.create!(item: tire, price: tire.price, quantity: 1)
+      @order_2.item_orders.create!(item: pencil, price: pencil.price, quantity: 10)
+
+      @user_3 = User.create!(name: "Chloe", address: "123 Main St", city: "Denver", state: "CO", zip: "80439", email: "myemailyay@email.com", password: "password", role: 1)
+
+      @order_3 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'UT', zip: 17033, status: "pending", user_id: @user_3.id)
+
+      @order_3.item_orders.create!(item: tire, price: tire.price, quantity: 6)
+
+      @user_4 = User.create!(name: "Kat", address: "123 Main St", city: "Denver", state: "CO", zip: "80439", email: "myotheremail@email.com", password: "password", role: 1)
+
+      @order_4 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'NC', zip: 17033, status: "cancelled", user_id: @user_4.id)
+
+      @order_4.item_orders.create!(item: paper, price: paper.price, quantity: 9)
+
+      @user = User.create!(name: "Megan", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "12345@gmail.com", password: "password", role: 3)
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+    end
+
+    it "sees every order in the system with information on the order ad its status" do
+      visit "/admin"
+
+      within(".order-#{@order_1.id}") do
+        expect(page).to have_link("Nick's Order")
+        expect(page).to have_content("Order Id: #{@order_1.id}")
+        expect(page).to have_content("Date Created: #{@order_1.created_at}")
+      end
+
+      within(".order-#{@order_2.id}") do
+        expect(page).to have_link("Tim's Order")
+        expect(page).to have_content("Order Id: #{@order_2.id}")
+        expect(page).to have_content("Date Created: #{@order_2.created_at}")
+      end
+
+      within(".order-#{@order_3.id}") do
+        expect(page).to have_link("Chloe's Order")
+        expect(page).to have_content("Order Id: #{@order_3.id}")
+        expect(page).to have_content("Date Created: #{@order_3.created_at}")
+      end
+
+      within(".order-#{@order_4.id}") do
+        expect(page).to have_link("Kat's Order")
+        expect(page).to have_content("Order Id: #{@order_4.id}")
+        expect(page).to have_content("Date Created: #{@order_4.created_at}")
+      end
+
+      within(".orders") do
+        expect(page.all('li')[0]).to have_content("Order Id: #{@order_1.id}")
+        expect(page.all('li')[1]).to have_content("Order Id: #{@order_3.id}")
+        expect(page.all('li')[2]).to have_content("Order Id: #{@order_2.id}")
+        expect(page.all('li')[3]).to have_content("Order Id: #{@order_4.id}")
+      end
+
+      within(".orders") do
+        within(".order-#{@order_1.id}") do
+          click_on "Nick's Order"
+          expect(current_path).to eq("/admin/users/#{@user_1.id}")
+        end
+      end
+
+    end
+  end
 end
