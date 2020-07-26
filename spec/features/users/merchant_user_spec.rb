@@ -11,7 +11,7 @@ RSpec.describe "as a merchant level user" do
 
       expect(page).to have_link("Dashboard")
       click_on "Dashboard"
-      expect(current_path).to eq("/merchant/dashboard")
+      expect(current_path).to eq("/merchant")
     end
 
     it "does not see link to merchant dashboard when logged in as default user" do
@@ -33,8 +33,8 @@ RSpec.describe "as a merchant level user" do
 
       visit "/admin/users"
       expect(page).to have_content("The page you were looking for doesn't exist.")
-      
-      visit "/admin/dashboard"
+
+      visit "/admin"
       expect(page).to have_content("The page you were looking for doesn't exist.")
     end
   end

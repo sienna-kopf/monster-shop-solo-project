@@ -26,7 +26,7 @@ RSpec.describe "User login" do
 
       click_on "Log In"
 
-      expect(current_path).to eq("/merchant/dashboard")
+      expect(current_path).to eq("/merchant")
       expect(page).to have_content("You are now successfully logged in as #{user.name}")
     end
   end
@@ -42,7 +42,7 @@ RSpec.describe "User login" do
 
       click_on "Log In"
 
-      expect(current_path).to eq("/admin/dashboard")
+      expect(current_path).to eq("/admin")
       expect(page).to have_content("You are now successfully logged in as #{user.name}")
     end
   end
@@ -112,7 +112,7 @@ RSpec.describe "User login" do
 
         visit "/login"
 
-        expect(current_path).to eq("/merchant/dashboard")
+        expect(current_path).to eq("/merchant")
         expect(page).to have_content("Already Logged In.")
       end
     end
@@ -124,7 +124,7 @@ RSpec.describe "User login" do
 
         visit "/login"
 
-        expect(current_path).to eq("/admin/dashboard")
+        expect(current_path).to eq("/admin")
         expect(page).to have_content("Already Logged In.")
       end
     end
@@ -195,7 +195,7 @@ RSpec.describe "User login" do
 
       within('#image-link') do
         click_link "Gatorskins"
-      end 
+      end
 
       click_on "Add To Cart"
 
