@@ -2,10 +2,10 @@ class SessionsController < ApplicationController
 
   def new
     if current_admin?
-      redirect_to "/admin/dashboard"
+      redirect_to "/admin"
       flash[:error] = "Already Logged In."
     elsif current_merchant?
-      redirect_to "/merchant/dashboard"
+      redirect_to "/merchant"
       flash[:error] = "Already Logged In."
     elsif current_user
       redirect_to "/profile"
@@ -21,9 +21,9 @@ class SessionsController < ApplicationController
         session[:user_id] = user.id
         flash[:success] = "You are now successfully logged in as #{user.name}"
         if current_admin?
-          redirect_to '/admin/dashboard'
+          redirect_to '/admin'
         elsif current_merchant?
-          redirect_to "/merchant/dashboard"
+          redirect_to "/merchant"
         else
           redirect_to "/profile"
         end
@@ -36,7 +36,7 @@ class SessionsController < ApplicationController
       render :new
     end
   end
-  
+
   def destroy
     reset_session
     flash[:success] = "You have successfully logged out."

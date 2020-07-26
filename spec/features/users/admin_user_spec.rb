@@ -11,7 +11,7 @@ RSpec.describe "as an admin level user" do
 
       expect(page).to have_link("Dashboard")
       click_on "Dashboard"
-      expect(current_path).to eq("/admin/dashboard")
+      expect(current_path).to eq("/admin")
 
       expect(page).to have_link("All Users")
       click_on "All Users"
@@ -38,9 +38,9 @@ RSpec.describe "as an admin level user" do
 
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(admin)
 
-      visit "/merchant/dashboard"
+      visit "/merchant"
       expect(page).to have_content("The page you were looking for doesn't exist.")
-      
+
       visit "/cart"
       expect(page).to have_content("The page you were looking for doesn't exist.")
       ## make sure we test more cart paths if they exist

@@ -54,11 +54,11 @@ Rails.application.routes.draw do
   put "/cart/:item_id/decrease", to: "cart#decrease"
 
   namespace :merchant do
-    get "/dashboard", to: "dashboard#index"
+    get "/", to: "dashboard#index"
   end
 
   namespace :admin do
-    get "/dashboard", to: "dashboard#index"
+    get "/", to: "dashboard#index"
     get "/users", to: "users#index"
   end
 end
