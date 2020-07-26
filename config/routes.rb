@@ -33,7 +33,7 @@ Rails.application.routes.draw do
   get "/orders/new", to: "orders#new"
   post "/orders", to: "orders#create"
   get "/orders/:id", to: "orders#show"
-  get "/orders/:id/cancel", to: "orders#update"
+  get "/orders/:id/update", to: "orders#update"
 
   get "/register/new", to: "users#new"
   post "/register", to: "users#create"
@@ -61,5 +61,6 @@ Rails.application.routes.draw do
     get "/", to: "dashboard#index"
     get "/users", to: "users#index"
     get "/users/:user_id", to: "users#show"
+    patch "/orders/:order_id/update", to: "orders#update"
   end
 end
