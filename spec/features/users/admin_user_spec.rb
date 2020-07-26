@@ -119,13 +119,34 @@ RSpec.describe "as an admin level user" do
         expect(page.all('li')[3]).to have_content("Order Id: #{@order_4.id}")
       end
 
-      within(".orders") do
-        within(".order-#{@order_1.id}") do
-          click_on "Nick's Order"
-          expect(current_path).to eq("/admin/users/#{@user_1.id}")
-        end
+      within(".order-#{@order_1.id}") do
+        click_on "Nick's Order"
+        expect(current_path).to eq("/admin/users/#{@user_1.id}")
+      end
+    end
+
+    it "an admin can ship a packaged item" do
+      visit "/admin"
+
+      within(".order-#{@order_1.id}") do
+        click_button "Ship"
+        expect(current_path).to eq("/admin")
       end
 
+      within(".orders") do
+        expect(page.all('li')[0]).to have_content("Order Id: #{@order_3.id}")
+        expect(page.all('li')[1]).to have_content("Order Id: #{@order_2.id}")
+        expect(page.all('li')[2]).to have_content("Order Id: #{@order_1.id}")
+        expect(page.all('li')[3]).to have_content("Order Id: #{@order_4.id}")
+      end
+
+      click_on "Log Out"
+
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user_1)
+
+      visit "/orders/#{@order_1.id}"
+
+      expect(page).to_not have_link("Cancel Order")
     end
   end
 end
