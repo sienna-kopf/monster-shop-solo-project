@@ -17,7 +17,8 @@ RSpec.describe "User login" do
   end
   describe "merchant user logs in" do
     it "redirects to merchant dashboard page and displays flash message" do
-      user = User.create(name: "Megan", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "12345@gmail.com", password: "password", role: 2)
+      merchant1 = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
+      user = User.create(name: "Megan", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "12345@gmail.com", password: "password", role: 2, merchant_id: merchant1.id)
 
       visit "/login"
 
@@ -107,7 +108,9 @@ RSpec.describe "User login" do
 
     describe "as a merchant user" do
       it "is redirected to merchant dashboard and displays flash message" do
-        user = User.create(name: "Megan", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "12345@gmail.com", password: "password", role: 2)
+        merchant1 = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
+        user = User.create(name: "Megan", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "12345@gmail.com", password: "password", role: 2, merchant_id: merchant1.id)
+
         allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
 
         visit "/login"
@@ -172,8 +175,8 @@ RSpec.describe "User login" do
 
   describe "as a merchant user" do
     it "visit logout path, get redirected to home page, show logout flash message, and delete items in the shopping cart" do
-      tim = User.create(name: "Tim", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "myemail@gmail.com", password: "password123", role: 2)
       bike_shop = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
+      tim = User.create(name: "Tim", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "myemail@gmail.com", password: "password123", role: 2, merchant_id: bike_shop.id)
       tire = bike_shop.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12)
 
       visit "/login"
