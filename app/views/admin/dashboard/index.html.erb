@@ -1,1 +1,16 @@
 <h1>Admin Dashboard</h1>
+
+<section class="orders">
+  <% @sorted_orders.each do |order| %>
+    <section class="order-<%= order.id %>">
+      <ul>
+        <li>
+          <p> <%= link_to "#{User.find(order.user_id).name}'s Order", "/admin/users/#{User.find(order.user_id).id}" %></p>
+          <p>Order Id: <%= order.id %></p>
+          <p>Date Created: <%= order.created_at %></p>
+        </li>
+      </ul>
+    </section>
+   <hr></hr>
+  <% end %>
+</section>
