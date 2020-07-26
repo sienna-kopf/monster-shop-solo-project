@@ -28,7 +28,7 @@ class OrdersController <ApplicationController
       render :new
     end
   end
-  
+
   def update
     order = Order.where("id = ?", params[:id])
     item_order = ItemOrder.where("order_id = ?", params[:id])
@@ -42,7 +42,13 @@ class OrdersController <ApplicationController
     flash[:success] = "Your order is now cancelled!"
     redirect_to "/profile"
   end
-  
+
+  def update
+    order = Order.find(params[:order_id])
+    order.update(status: "shipped")
+    redirect_to "/admin"
+  end
+
   private
 
   def order_params
