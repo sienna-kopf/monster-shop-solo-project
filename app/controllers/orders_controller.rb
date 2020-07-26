@@ -43,12 +43,6 @@ class OrdersController <ApplicationController
     redirect_to "/profile"
   end
 
-  def update
-    order = Order.find(params[:order_id])
-    order.update(status: "shipped")
-    redirect_to "/admin"
-  end
-
   private
 
   def order_params

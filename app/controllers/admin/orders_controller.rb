@@ -1,10 +1,4 @@
-class Admin::UsersController < Admin::BaseController
-  def index
-  end
-
-  def show
-  end
-
+class Admin::OrdersController < Admin::BaseController
   def update
     order = Order.find(params[:order_id])
     order.update(status: "shipped")
