@@ -17,6 +17,7 @@ class Admin::MerchantsController < Admin::BaseController
       end
     else
       merchant.toggle(:enabled?)
+      merchant.items.update(enabled?: true)
       if merchant.save
         flash[:success] = "#{merchant.name} has been enabled"
       end
