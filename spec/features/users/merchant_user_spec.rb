@@ -55,16 +55,53 @@ RSpec.describe "as a merchant level user" do
 
     end
   end
-  
+
   describe "in the merchant dashboard, i see any pending orders for my store" do
     it "i also see details of the pending orders" do
+      user_1 = User.create!(name: "Nick", address: "123 Main St", city: "Denver", state: "CO", zip: "80439", email: "3myemail@email.com", password: "password", role: 1)
+
       merchant1 = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
+      merchant2 = Merchant.create(name: "Meg's Tire Shop", address: '123 Tire Rd.', city: 'Denver', state: 'CO', zip: 80403)
+      tire = merchant2.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12)
+      paper = merchant1.items.create(name: "Lined Paper", description: "Great for writing on!", price: 20, image: "https://cdn.vertex42.com/WordTemplates/images/printable-lined-paper-wide-ruled.png", inventory: 35)
+      pencil = merchant1.items.create(name: "Yellow Pencil", description: "You can write on paper with it!", price: 2, image: "https://images-na.ssl-images-amazon.com/images/I/31BlVr01izL._SX425_.jpg", inventory: 100)
+
+      order_1 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "shipped", user_id: user_1.id)
+
+      order_1.item_orders.create!(item: tire, price: tire.price, quantity: 2)
+      order_1.item_orders.create!(item: paper, price: paper.price, quantity: 3)
+
+      user_2 = User.create(name: "Tim", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "1234@gmail.com", password: "password", role: 1)
+
+      order_2 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "cancelled", user_id: user_2.id)
+
+      order_2.item_orders.create!(item: pencil, price: pencil.price, quantity: 10)
+      order_2.item_orders.create!(item: paper, price: paper.price, quantity: 3)
+
+      user_3 = User.create!(name: "Chloe", address: "123 Main St", city: "Denver", state: "CO", zip: "80439", email: "m3yemailyay@email.com", password: "password", role: 1)
+
+      order_3 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "pending", user_id: user_3.id)
+
+      order_3.item_orders.create!(item: tire, price: tire.price, quantity: 10)
+
+      user_4 = User.create!(name: "Kat", address: "123 Main St", city: "Denver", state: "CO", zip: "80439", email: "1myotheremail@email.com", password: "password", role: 1)
+
+      order_4 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "pending", user_id: user_4.id)
+
+      order_4.item_orders.create!(item: paper, price: paper.price, quantity: 3)
+
+      user_5 = User.create!(name: "Ally", address: "123 Main St", city: "Denver", state: "CO", zip: "80439", email: "2myotheremail@email.com", password: "password", role: 1)
+
+      order_4 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "pending", user_id: user_5.id)
+
+      order_4.item_orders.create!(item: paper, price: paper.price, quantity: 8)
+
       user = User.create(name: "Megan", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "12345@gmail.com", password: "password", role: 2, merchant_id: merchant1.id)
-  
+
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
-  
+
       visit "/merchant"
-      
+
       # When I visit my merchant dashboard ("/merchant")
       # If any users have pending orders containing items I sell
       # Then I see a list of these orders.
@@ -73,7 +110,7 @@ RSpec.describe "as a merchant level user" do
       # - the date the order was made
       # - the total quantity of my items in the order
       # - the total value of my items for that order
-  
+
     end
   end
 end
