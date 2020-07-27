@@ -235,5 +235,21 @@ RSpec.describe "as an admin level user" do
 
       expect(page).to have_content("#{@mike.name} has been enabled")
     end
+
+    it "re-enables a merchant which re-enables all of that merchants items" do
+      visit "/admin/merchants"
+
+      within(".merchant-#{@mike.id}") do
+        click_on "disable"
+      end
+
+      @mike.items.all? {|item| item.enabled? == false}
+
+      within(".merchant-#{@mike.id}") do
+        click_on "enable"
+      end
+
+      @mike.items.all? {|item| item.enabled? == true}
+    end
   end
 end
