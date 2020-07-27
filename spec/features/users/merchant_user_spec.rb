@@ -42,18 +42,34 @@ RSpec.describe "as a merchant level user" do
   end
 
   describe "it visits its dashboard" do
-    it "can see the merchant it works for" do
-      merchant1 = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
-      user = User.create(name: "Megan", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "12345@gmail.com", password: "password", role: 2, merchant_id: merchant1.id)
+    before :each do
+    @merchant1 = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
+    @merchant2 = Merchant.create(name: "Lilo's Tire Shop", address: '123 Tire Rd.', city: 'Golden', state: 'CO', zip: 80401)
+    @tire = @merchant2.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12)
+    @paper = @merchant1.items.create(name: "Lined Paper", description: "Great for writing on!", price: 20, image: "https://cdn.vertex42.com/WordTemplates/images/printable-lined-paper-wide-ruled.png", inventory: 35)
+    @pencil = @merchant1.items.create(name: "Yellow Pencil", description: "You can write on paper with it!", price: 2, image: "https://images-na.ssl-images-amazon.com/images/I/31BlVr01izL._SX425_.jpg", inventory: 100)
 
-      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+    @user = User.create(name: "Megan", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "12345@gmail.com", password: "password", role: 2, merchant_id: @merchant1.id)
 
-      visit "/merchant"
-
-      expect(page).to have_content("#{merchant1.name}")
-      expect(page).to have_content("#{merchant1.address}")
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
 
     end
+    it "can see the merchant it works for" do
+      visit "/merchant"
+
+      expect(page).to have_content("#{@merchant1.name}")
+      expect(page).to have_content("#{@merchant1.address}")
+      expect(page).to_not have_content("#{@merchant2.name}")
+      expect(page).to_not have_content("#{@merchant2.address}")
+    end
+
+    it "can see a link to view own items" do
+      visit "/merchant"
+
+      click_on "My Items"
+
+      expect(current_path).to eq("/merchant/items")
+    end 
   end
 
   describe "in the merchant dashboard, i see any pending orders for my store" do
