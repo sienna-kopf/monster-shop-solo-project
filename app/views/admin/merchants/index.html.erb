@@ -3,7 +3,7 @@
 <section class = "grid-container">
   <% @merchants.each do |merchant|%>
     <section class = "grid-item merchant-<%= merchant.id %>">
-      <% if current_user.role == "admin" %>
+      <% if current_user && current_user.role == "admin" %>
         <h2><%=link_to merchant.name, "/admin/merchants/#{merchant.id}"%></h2>
       <% else %>
         <h2><%=link_to merchant.name, "/merchants/#{merchant.id}"%></h2>
