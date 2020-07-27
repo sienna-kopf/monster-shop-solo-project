@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200726221009) do
+ActiveRecord::Schema.define(version: 20200727032018) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,7 +23,9 @@ ActiveRecord::Schema.define(version: 20200726221009) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status", default: "nil"
+    t.bigint "merchant_id"
     t.index ["item_id"], name: "index_item_orders_on_item_id"
+    t.index ["merchant_id"], name: "index_item_orders_on_merchant_id"
     t.index ["order_id"], name: "index_item_orders_on_order_id"
   end
 
@@ -83,11 +85,12 @@ ActiveRecord::Schema.define(version: 20200726221009) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "role", default: 0
-    t.bigint "merchant_id", default: nil
+    t.bigint "merchant_id"
     t.index ["merchant_id"], name: "index_users_on_merchant_id"
   end
 
   add_foreign_key "item_orders", "items"
+  add_foreign_key "item_orders", "merchants"
   add_foreign_key "item_orders", "orders"
   add_foreign_key "items", "merchants"
   add_foreign_key "orders", "users"
