@@ -83,7 +83,7 @@ ActiveRecord::Schema.define(version: 20200726221009) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "role", default: 0
-    t.bigint "merchant_id", default: nil
+    t.bigint "merchant_id"
     t.index ["merchant_id"], name: "index_users_on_merchant_id"
   end
 
