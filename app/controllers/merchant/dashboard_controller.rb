@@ -1,17 +1,9 @@
 class Merchant::DashboardController < Merchant::BaseController
   def index
     @merchant = Merchant.find(current_user.merchant_id)
-    binding.pry
-    # my_pending_orders = Item.where("merchant_id = ?", @merchant.id)
-    # id_i_need = 
-    
-    # Order.joins(:items).distinct.where(items: {merchant_id: @merchant.id}).where(orders: {status: "pending"})
 
-    # Item.where("merchant_id = ?", @merchant.id).joins(:orders).where("status = ?", "pending")
-    
-    # Item.where("merchant_id = ?", @merchant.id).select(:orders).where("status = ?", "pending")
-    
-    # Order.where("status = ?", "pending").select(:items).where("merchant_id = ?", @merchant.id)
-    
+    @merchant_orders = Order.joins(:items).where("items.merchant_id = ? and orders.status = 'pending'", @merchant.id)
+
+    # @total_quantity = @merchant_orders.item_orders.where('item_orders.merchant_id = ?', @merchant.id).sum(:quantity)
   end
 end
