@@ -66,35 +66,36 @@ RSpec.describe "as a merchant level user" do
       paper = merchant1.items.create(name: "Lined Paper", description: "Great for writing on!", price: 20, image: "https://cdn.vertex42.com/WordTemplates/images/printable-lined-paper-wide-ruled.png", inventory: 35)
       pencil = merchant1.items.create(name: "Yellow Pencil", description: "You can write on paper with it!", price: 2, image: "https://images-na.ssl-images-amazon.com/images/I/31BlVr01izL._SX425_.jpg", inventory: 100)
 
-      order_1 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "shipped", user_id: user_1.id)
+      @order_1 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "shipped", user_id: user_1.id)
 
-      order_1.item_orders.create!(item: tire, price: tire.price, quantity: 2)
-      order_1.item_orders.create!(item: paper, price: paper.price, quantity: 3)
+      @order_1.item_orders.create!(item: tire, price: tire.price, quantity: 2)
+      @order_1.item_orders.create!(item: paper, price: paper.price, quantity: 3)
 
       user_2 = User.create(name: "Tim", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "1234@gmail.com", password: "password", role: 1)
 
-      order_2 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "cancelled", user_id: user_2.id)
+      @order_2 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "cancelled", user_id: user_2.id)
 
-      order_2.item_orders.create!(item: pencil, price: pencil.price, quantity: 10)
-      order_2.item_orders.create!(item: paper, price: paper.price, quantity: 3)
+      @order_2.item_orders.create!(item: pencil, price: pencil.price, quantity: 10)
+      @order_2.item_orders.create!(item: paper, price: paper.price, quantity: 3)
 
       user_3 = User.create!(name: "Chloe", address: "123 Main St", city: "Denver", state: "CO", zip: "80439", email: "m3yemailyay@email.com", password: "password", role: 1)
 
-      order_3 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "pending", user_id: user_3.id)
+      @order_3 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "pending", user_id: user_3.id)
 
-      order_3.item_orders.create!(item: tire, price: tire.price, quantity: 10)
+      @order_3.item_orders.create!(item: tire, price: tire.price, quantity: 10)
 
       user_4 = User.create!(name: "Kat", address: "123 Main St", city: "Denver", state: "CO", zip: "80439", email: "1myotheremail@email.com", password: "password", role: 1)
 
-      order_4 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "pending", user_id: user_4.id)
+      @order_4 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "pending", user_id: user_4.id)
 
-      order_4.item_orders.create!(item: paper, price: paper.price, quantity: 3)
+      @order_4.item_orders.create!(item: paper, price: paper.price, quantity: 3, merchant_id: merchant1.id)
+      @order_4.item_orders.create!(item: tire, price: tire.price, quantity: 10, merchant_id: merchant2.id)
 
       user_5 = User.create!(name: "Ally", address: "123 Main St", city: "Denver", state: "CO", zip: "80439", email: "2myotheremail@email.com", password: "password", role: 1)
 
-      order_4 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "pending", user_id: user_5.id)
+      @order_5 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "pending", user_id: user_5.id)
 
-      order_4.item_orders.create!(item: paper, price: paper.price, quantity: 8)
+      @order_5.item_orders.create!(item: paper, price: paper.price, quantity: 8, merchant_id: merchant1.id)
 
       user = User.create(name: "Megan", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "12345@gmail.com", password: "password", role: 2, merchant_id: merchant1.id)
 
@@ -102,15 +103,28 @@ RSpec.describe "as a merchant level user" do
 
       visit "/merchant"
 
-      # When I visit my merchant dashboard ("/merchant")
-      # If any users have pending orders containing items I sell
-      # Then I see a list of these orders.
-      # Each order listed includes the following information:
-      # - the ID of the order, which is a link to the order show page ("/merchant/orders/15")
-      # - the date the order was made
-      # - the total quantity of my items in the order
-      # - the total value of my items for that order
+      within(".orders") do
+        expect(page).to have_content("#{@order_4.id}")
+        expect(page).to have_content("#{@order_5.id}")
+      end
 
+      within(".order-#{@order_4.id}") do
+        expect(page).to have_link("#{@order_4.id}")
+        expect(page).to have_content("#{@order_4.created_at}")
+        expect(page).to have_content("3")
+        expect(page).to have_content("$60.00")
+      end
+
+      within(".order-#{@order_5.id}") do
+        expect(page).to have_link("#{@order_5.id}")
+        expect(page).to have_content("#{@order_5.created_at}")
+        expect(page).to have_content("8")
+        expect(page).to have_content("$160.00")
+
+        click_on "Order Id: #{@order_5.id}"
+
+        expect(current_path).to eq("/merchant/orders/#{@order_5.id}")
+      end
     end
   end
 end
