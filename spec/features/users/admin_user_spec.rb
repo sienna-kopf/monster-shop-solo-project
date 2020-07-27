@@ -149,4 +149,31 @@ RSpec.describe "as an admin level user" do
       expect(page).to_not have_link("Cancel Order")
     end
   end
+
+  describe "visit the merchant index page" do
+    it "can click on a merchant's name to see merchant show page" do
+      mike = Merchant.create(name: "Mike's Print Shop", address: '123 Paper Rd.', city: 'Denver', state: 'CO', zip: 80203)
+      meg = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
+      tire = meg.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12)
+      paper = mike.items.create(name: "Lined Paper", description: "Great for writing on!", price: 20, image: "https://cdn.vertex42.com/WordTemplates/images/printable-lined-paper-wide-ruled.png", inventory: 35)
+      pencil = mike.items.create(name: "Yellow Pencil", description: "You can write on paper with it!", price: 2, image: "https://images-na.ssl-images-amazon.com/images/I/31BlVr01izL._SX425_.jpg", inventory: 100)
+
+      user = User.create!(name: "Nick", address: "123 Main St", city: "Denver", state: "CO", zip: "80439", email: "myemail@email.com", password: "password", role: 3)
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
+
+      visit "/merchants"
+
+      click_on "Mike's Print Shop"
+
+      expect(current_path).to eq("/admin/merchants/#{mike.id}")
+
+      expect(page).to have_content("Mike's Print Shop")
+      expect(page).to have_content("123 Paper Rd.")
+      expect(page).to have_link("All #{mike.name} Items")
+
+      click_on "All #{mike.name} Items"
+
+      expect(current_path).to eq("/merchants/#{mike.id}/items")
+    end
+  end
 end
