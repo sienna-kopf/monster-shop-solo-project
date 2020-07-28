@@ -31,18 +31,18 @@
 </section>
 
 <section class="most_pop_items">
-  <ul>
+  <ul><h3>Five Most Popular Items:</h3>
     <% @items.most_pop_items.each do |item| %>
       <li class="pop-item-<%= item.id%>">
         <%=link_to item.name, "/items/#{item.id}" %>
-        <p>Quantity Ordered: <%= item.quantity_ordered %></p>   
+        <p>Quantity Ordered: <%= item.quantity_ordered %></p>
         </li>
     <% end %>
   </ul>
 </section>
 
 <section class="least_pop_items">
-  <ul>
+  <ul><h3>Five Least Popular Items:</h3>
     <% @items.least_pop_items.each do |item| %>
       <li class="pop-item-<%= item.id%>">
         <%=link_to item.name, "/items/#{item.id}" %>
