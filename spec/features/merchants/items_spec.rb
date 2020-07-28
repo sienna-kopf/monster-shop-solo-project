@@ -10,6 +10,7 @@ RSpec.describe "As a merchant user" do
     @dog_bone = @meg.items.create(name: "Dog Bone", description: "They'll love it!", price: 21, image: "https://img.chewy.com/is/image/catalog/54226_MAIN._AC_SL1500_V1534449573_.jpg", inventory: 21)
 
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+
   end
 
   describe "When I visit the items index page" do
@@ -108,8 +109,7 @@ RSpec.describe "As a merchant user" do
       expect(page).to have_content("New item has been sucessfully added")
 
       within "#item-#{new_item.id}" do
-        expect(page).to_not have_button("Toy Plane")
-        expect(page).to_not have_button("#{new_item.id}")
+        expect(page).to have_content("Toy Plane")
       end
 
       expect(new_item.enabled?).to eq(true)
@@ -135,6 +135,31 @@ RSpec.describe "As a merchant user" do
       expect(page).to have_content("Description can't be blank")
       expect(page).to have_content("Price must be greater than 0")
       expect(page).to have_content("Inventory can't be blank")
+    end
+
+    it "doesn't have to input an image to create a new item" do
+      visit "/merchant/items"
+
+      click_on "Add New Item"
+
+      expect(current_path).to eq("/merchant/items/new")
+
+      fill_in :name, with: "Toy Plane"
+      fill_in :description, with: "For young girls and boys dreaming of being pilots."
+      fill_in :price, with: 45
+      fill_in :inventory, with: 3
+
+      click_on "Create Item"
+
+      new_item = Item.last
+
+      expect(current_path).to eq("/merchant/items")
+      expect(page).to have_content("New item has been sucessfully added")
+
+      within "#item-#{new_item.id}" do
+        expect(page).to have_css("img[src*='https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSdrF1u_GSYOgpnRJ-2EC87fkfF8sVBC2LZ4A&usqp=CAU']")
+        expect(page).to have_content("Toy Plane")
+      end
     end
   end
 end
