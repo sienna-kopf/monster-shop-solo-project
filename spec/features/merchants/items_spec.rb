@@ -84,7 +84,36 @@ RSpec.describe "As a merchant user" do
 
       expect(page).to_not have_content("Great pull toy!")
       expect(page).to_not have_content("#{@pull_toy.id}")
+    end
 
+    it "can add an item" do
+      visit "/merchant/items"
+
+      click_on "Add New Item"
+
+      expect(current_path).to eq("/merchant/items/new")
+      image_url = "https://images-na.ssl-images-amazon.com/images/I/51HMpDXItgL._SX569_.jpg"
+
+      fill_in :name, with: "Toy Plane"
+      fill_in :description, with: "For young girls and boys dreaming of being pilots."
+      fill_in :image, with: image_url
+      fill_in :price, with: 45
+      fill_in :inventory, with: 3
+
+      click_on "Create Item"
+
+      new_item = Item.last
+
+      expect(current_path).to eq("/merchant/items")
+      expect(page).to have_content("New item has been sucessfully added")
+
+      within "#item-#{new_item.id}" do
+        expect(page).to_not have_button("Toy Plane")
+        expect(page).to_not have_button("#{new_item.id}")
+      end
+
+      expect(new_item.enabled?).to eq(true)
+      expect(new_item.active?).to eq(true)
     end
   end
 end
