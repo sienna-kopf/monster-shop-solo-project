@@ -24,4 +24,24 @@ class Merchant::ItemsController < Merchant::BaseController
     flash[:sucess] = "#{item.name} was sucessfully deleted"
     redirect_to "/merchant/items"
   end
+
+  def new
+  end
+
+  def create
+    merchant = Merchant.find(current_user.merchant_id)
+    item = merchant.items.create(item_params)
+    if item.save
+      flash[:success] = "New item has been sucessfully added"
+    else
+      flash[:error] = "Item was unable to be added"
+    end
+    redirect_to "/merchant/items"
+  end
+
+  private
+
+  def item_params
+    params.permit(:name, :description, :image, :price, :inventory)
+  end
 end
