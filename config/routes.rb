@@ -59,6 +59,8 @@ Rails.application.routes.draw do
     get "/items", to: "items#index"
     patch "/items/:id/update", to: "items#update"
     delete "/items/:id/delete", to: "items#delete"
+    get "/items/new", to: "items#new"
+    post "/items", to: "items#create"
   end
 
   namespace :admin do
