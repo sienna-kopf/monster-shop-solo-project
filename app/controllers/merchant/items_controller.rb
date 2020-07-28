@@ -33,10 +33,11 @@ class Merchant::ItemsController < Merchant::BaseController
     item = merchant.items.create(item_params)
     if item.save
       flash[:success] = "New item has been sucessfully added"
+      redirect_to "/merchant/items"
     else
-      flash[:error] = "Item was unable to be added"
+      flash[:error] = item.errors.full_messages.to_sentence
+      redirect_to "/merchant/items/new"
     end
-    redirect_to "/merchant/items"
   end
 
   private
