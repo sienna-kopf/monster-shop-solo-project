@@ -32,4 +32,8 @@ class Item <ApplicationRecord
   def self.least_pop_items
     self.all.joins(:orders).group(:id).order('sum(item_orders.quantity) ASC').limit(5)
   end
+
+  def quantity_ordered
+    item_orders.sum(:quantity)
+  end
 end
