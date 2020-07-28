@@ -27,13 +27,36 @@ RSpec.describe "As a merchant user" do
       expect(page).to have_button("Deactivate")
       expect(page).to_not have_content("Activate")
 
-      click_on "Deactivate"
+      within "#item-#{@tire.id}" do
+        click_on "Deactivate"
+      end
 
       expect(current_path).to eq("/merchant/items")
 
       expect(page).to have_content("#{@tire.name} is no longer for sale")
 
-      @meg.items.all? {|item| item.enabled? == false}
+      @meg.items.all? {|item| item.active? == false}
+    end
+    
+    it "I see a button to activate inactive items," do
+    
+      visit "/merchant/items"
+
+      within "#item-#{@tire.id}" do
+        click_on "Deactivate"
+      end
+      expect(current_path).to eq("/merchant/items")
+
+      within "#item-#{@tire.id}" do
+        click_on "Activate"
+      end
+      
+      expect(current_path).to eq("/merchant/items")
+      
+      @meg.items.all? {|item| item.active? == true}
+
+      expect(page).to have_content("#{@tire.name} is now for sale")
+
     end
   end
 end
