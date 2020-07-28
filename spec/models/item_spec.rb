@@ -48,6 +48,22 @@ describe Item, type: :model do
       order.item_orders.create(item: @chain, price: @chain.price, quantity: 2)
       expect(@chain.no_orders?).to eq(false)
     end
+
+    it 'quantity_ordered' do
+      user_1 = User.create!(name: "Nick", address: "123 Main St", city: "Denver", state: "CO", zip: "80439", email: "myemailemail.com", password: "password", role: 1)
+
+      order_1 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "shipped", user_id: user_1.id)
+
+      order_1.item_orders.create!(item: @chain, price: @chain.price, quantity: 3)
+
+      user_2 = User.create(name: "Tim", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "1234gmail.com", password: "password", role: 1)
+
+      order_2 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "pending", user_id: user_2.id)
+
+      order_2.item_orders.create!(item: @chain, price: @chain.price, quantity: 1)
+
+      expect(@chain.quantity_ordered).to eq(4)
+    end
   end
 
   describe "class methods" do
