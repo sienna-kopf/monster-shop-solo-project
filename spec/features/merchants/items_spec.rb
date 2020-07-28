@@ -37,9 +37,9 @@ RSpec.describe "As a merchant user" do
 
       @meg.items.all? {|item| item.active? == false}
     end
-    
+
     it "I see a button to activate inactive items," do
-    
+
       visit "/merchant/items"
 
       within "#item-#{@tire.id}" do
@@ -50,12 +50,40 @@ RSpec.describe "As a merchant user" do
       within "#item-#{@tire.id}" do
         click_on "Activate"
       end
-      
+
       expect(current_path).to eq("/merchant/items")
-      
+
       @meg.items.all? {|item| item.active? == true}
 
       expect(page).to have_content("#{@tire.name} is now for sale")
+
+    end
+
+    it "can delete items that have not been ordered" do
+      order_4 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'NC', zip: 17033, status: "cancelled", user_id: @user.id)
+
+      order_4.item_orders.create!(item: @dog_bone, price: @dog_bone.price, quantity: 9)
+
+      visit "/merchant/items"
+
+      within(".delete-item-#{@tire.id}") do
+        expect(page).to have_button("delete")
+      end
+
+      within "#item-#{@dog_bone.id}" do
+        expect(page).to_not have_button("delete")
+      end
+
+      within "#item-#{@pull_toy.id}" do
+        click_button "delete"
+
+        expect(current_path).to eq("/merchant/items")
+      end
+
+      expect(page).to have_content("#{@pull_toy.name} was sucessfully deleted")
+
+      expect(page).to_not have_content("Great pull toy!")
+      expect(page).to_not have_content("#{@pull_toy.id}")
 
     end
   end
