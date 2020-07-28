@@ -115,5 +115,26 @@ RSpec.describe "As a merchant user" do
       expect(new_item.enabled?).to eq(true)
       expect(new_item.active?).to eq(true)
     end
+
+    it "fails to add item if form is incomplete" do
+      visit "/merchant/items"
+
+      click_on "Add New Item"
+
+      expect(current_path).to eq("/merchant/items/new")
+
+      fill_in :name, with: ""
+      fill_in :description, with: ""
+      fill_in :price, with: 0
+      fill_in :inventory, with: ""
+
+      click_on "Create Item"
+
+      expect(current_path).to eq("/merchant/items/new")
+      expect(page).to have_content("Name can't be blank")
+      expect(page).to have_content("Description can't be blank")
+      expect(page).to have_content("Price must be greater than 0")
+      expect(page).to have_content("Inventory can't be blank")
+    end
   end
 end
