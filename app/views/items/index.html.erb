@@ -29,3 +29,25 @@
     <% end %>
   <% end %>
 </section>
+
+<section class="most_pop_items">
+  <ul>
+    <% @items.most_pop_items.each do |item| %>
+      <li class="pop-item-<%= item.id%>">
+        <%=link_to item.name, "/items/#{item.id}" %>
+        <p>Quantity Ordered: <%= item.quantity_ordered %></p>   
+        </li>
+    <% end %>
+  </ul>
+</section>
+
+<section class="least_pop_items">
+  <ul>
+    <% @items.least_pop_items.each do |item| %>
+      <li class="pop-item-<%= item.id%>">
+        <%=link_to item.name, "/items/#{item.id}" %>
+        <p>Quantity Ordered: <%= item.quantity_ordered %></p>
+      </li>
+    <% end %>
+  </ul>
+</section>
