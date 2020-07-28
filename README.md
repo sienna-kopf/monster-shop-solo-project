@@ -545,7 +545,7 @@ I see every order I've made, which includes the following information:
 ```
 
 ```
-[ ] done
+[X] done
 
 User Story 29, User views an Order Show Page
 
@@ -564,7 +564,7 @@ I see all information about the order, including the following information:
 ```
 
 ```
-[ ] done
+[X] done
 
 User Story 30, User cancels an order
 
@@ -581,7 +581,7 @@ When I click the cancel button for an order, the following happens:
 ```
 
 ```
-[ ] done
+[X] done
 
 User Story 31, All Merchants fulfill items on an order
 
@@ -590,7 +590,7 @@ The order status changes from "pending" to "packaged"
 ```
 
 ```
-[ ] done
+[X] done
 
 User Story 32, Admin can see all orders
 
@@ -612,7 +612,7 @@ Orders are sorted by "status" in this order:
 ```
 
 ```
-[ ] done
+[X] done
 
 User Story 33, Admin can "ship" an order
 
@@ -633,7 +633,7 @@ This is the landing page when a merchant logs in. Here, they will see their cont
 Admin users will see more information on the "/admin/merchants" route that all users see. For example, on this page, an admin user can navigate to each merchant's dashboard under a route like "/admin/merchants/7". This will allow the admin to perform every action that the merchant themselves can perform. Fulfilling merchant items will be an extension in User Stories 61 & 62
 
 ```
-[ ] done
+[X] done
 
 User Story 34, Merchant Dashboard Show Page
 
@@ -643,7 +643,7 @@ I see the name and full address of the merchant I work for
 ```
 
 ```
-[ ] done
+[X] done
 
 User Story 35, Merchant Dashboard displays Orders
 
@@ -659,7 +659,7 @@ Each order listed includes the following information:
 ```
 
 ```
-[ ] done
+[X] done
 
 User Story 36, Merchant's Items index page
 
@@ -671,7 +671,7 @@ My URI route should be "/merchant/items"
 ```
 
 ```
-[ ] done
+[X] done
 
 User Story 37, Admin can see a merchant's dashboard
 
@@ -687,7 +687,7 @@ Then I see everything that merchant would see
 All users can see a merchant index page which will list some basic information about each merchant. When admins visit this page, however, more functionality is found, and it is found at the "/admin/merchants" route.
 
 ```
-[ ] done
+[X] done
 
 User Story 38, Admin disables a merchant account
 
@@ -700,7 +700,7 @@ And I see a flash message that the merchant's account is now disabled
 ```
 
 ```
-[ ] done
+[X] done
 
 User Story 39, Disabled Merchant Item's are inactive
 
@@ -711,7 +711,7 @@ Then all of that merchant's items should be deactivated
 ```
 
 ```
-[ ] done
+[X] done
 
 User Story 40, Admin enables a merchant account
 
@@ -724,7 +724,7 @@ And I see a flash message that the merchant's account is now enabled
 ```
 
 ```
-[ ] done
+[X] done
 
 User Story 41, Enabled Merchant Item's are active
 
@@ -743,7 +743,7 @@ Merchants need CRUD functionality for items in the database. These stories will 
 Admin users share all management functionality, but the routes will be much longer, like "/admin/merchants/8/items" and "/admin/merchants/8/items/6" and so on.
 
 ```
-[ ] done
+[X] done
 
 User Story 42, Merchant deactivates an item
 
