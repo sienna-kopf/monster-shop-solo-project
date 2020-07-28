@@ -27,13 +27,42 @@ RSpec.describe "As a merchant user" do
       expect(page).to have_button("Deactivate")
       expect(page).to_not have_content("Activate")
 
-      click_on "Deactivate"
+      within "#item-#{@tire.id}" do
+        click_on "Deactivate"
+      end
 
       expect(current_path).to eq("/merchant/items")
 
       expect(page).to have_content("#{@tire.name} is no longer for sale")
 
       @meg.items.all? {|item| item.enabled? == false}
+    end
+    
+    it "I see a button to activate inactive items," do
+    
+      visit "/merchant/items"
+
+      within "#item-#{@tire.id}" do
+        click_on "Deactivate"
+      end
+      expect(current_path).to eq("/merchant/items")
+
+      within "#item-#{@tire.id}" do
+        click_on "Activate"
+      end
+      
+      expect(current_path).to eq("/merchant/items")
+      
+      @meg.items.all? {|item| item.enabled? == true}
+
+      expect(page).to have_content("#{@tire.name} is now for sale")
+      #     As a merchant employee
+      # When I visit my items page
+      # I see a link or button to activate the item next to each item that is inactive
+      # And I click on the "activate" button or link for an item
+      # I am returned to my items page
+      # I see a flash message indicating this item is now available for sale
+      # I see the item is now active
     end
   end
 end
