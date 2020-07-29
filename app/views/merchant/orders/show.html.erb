@@ -4,7 +4,7 @@
 <h3> Order Contents: </h3>
 
 <% @order.items.each do |item| %>
-<% order_item = ItemOrder.where('item_orders.item_id = ?', item.id).first%>
+<% item_order = ItemOrder.find_by(item_id: item.id, order_id: @order.id) %>
   <section class = "order-item-<%= item.id %>">
     <section class = "item-show-grid">
       <section class = "item-show-item">
@@ -12,14 +12,14 @@
       </section>
     </section>
     <h3> <%= link_to item.name, "/items/#{item.id}" %></h3>
-    <p> Item Quantity: <%= order_item.quantity %></p>
+    <p> Quantity Ordered: <%= item_order.quantity %></p>
     <p> Item Price: <%= item.price %> </p>
-    <% if (order_item.quantity <= item.inventory) && (order_item.status == "nil") %>
-      <%= link_to "Fulfill Order", "/merchant/orders/#{item.id}/update", method: :patch  %>
-    <% elsif (order_item.quantity > item.inventory) && (order_item.status == "nil")%>
-      <p>Can not fullfull order due to lack of inventory</p>
+    <% if (item_order.quantity <= item.inventory) && (item_order.status == "nil") %>
+      <%= link_to "Fulfill Order", "/merchant/orders/#{@order.id}/items/#{item.id}/update", method: :patch  %>
+    <% elsif (item_order.quantity > item.inventory) && (item_order.status == "nil") %>
+      <p>Can not fulfill order due to lack of inventory.</p>
     <% else %>
-      <p>Fulfilled</p>
+      <p>Fulfilled.</p>
     <% end %>
   </section>
   <hr>
