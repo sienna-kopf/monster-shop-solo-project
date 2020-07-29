@@ -36,9 +36,4 @@ class Item <ApplicationRecord
   def quantity_ordered
     item_orders.sum(:quantity)
   end
-
-  def remove_inventory
-    item_order = ItemOrder.where('item_orders.item_id = ?', self.id).first
-    decrement!("inventory", by = item_order.quantity)
-  end
 end
