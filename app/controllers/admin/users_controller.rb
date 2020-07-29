@@ -4,6 +4,7 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def show
+    @user = User.find(params[:user_id])
   end
 
   def update
