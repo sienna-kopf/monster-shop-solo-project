@@ -15,7 +15,7 @@
     <%= text_field_tag :image %>
 
     <%= label_tag :inventory %>
-    <%= text_field_tag :inventory %>
+    <%= number_field_tag :inventory, nil, min: 1 %>
 
     <%= submit_tag 'Create Item' %>
   <% end %>

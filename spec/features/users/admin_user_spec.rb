@@ -134,10 +134,10 @@ RSpec.describe "as an admin level user" do
       end
 
       within(".orders") do
-        expect(page.all('li')[0]).to have_content("Order Id: #{@order_3.id}")
-        expect(page.all('li')[1]).to have_content("Order Id: #{@order_2.id}")
-        expect(page.all('li')[2]).to have_content("Order Id: #{@order_1.id}")
-        expect(page.all('li')[3]).to have_content("Order Id: #{@order_4.id}")
+        expect(page).to have_content("Order Id: #{@order_3.id}")
+        expect(page).to have_content("Order Id: #{@order_2.id}")
+        expect(page).to have_content("Order Id: #{@order_1.id}")
+        expect(page).to have_content("Order Id: #{@order_4.id}")
       end
 
       click_on "Log Out"
