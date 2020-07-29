@@ -56,12 +56,14 @@ Rails.application.routes.draw do
   namespace :merchant do
     get "/", to: "dashboard#index"
     get "/orders/:order_id", to: "orders#show"
-    patch "/orders/:item_id/update", to: "orders#update"
+    # patch "/orders/:item_id/update", to: "orders#update"
     get "/items", to: "items#index"
     patch "/items/:id/update", to: "items#update"
     delete "/items/:id/delete", to: "items#delete"
     get "/items/new", to: "items#new"
     post "/items", to: "items#create"
+
+    patch "/orders/:order_id/items/:item_id/update", to: "order_items#update"
   end
 
   namespace :admin do
