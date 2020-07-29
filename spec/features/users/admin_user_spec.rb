@@ -278,5 +278,18 @@ RSpec.describe "as an admin level user" do
 
       expect(current_path).to eq("/admin/users/#{@user2.id}")
     end
+
+    it "can see a users information on their show page" do
+      visit("/admin/users/#{@user2.id}")
+
+      expect(page).to have_content(@user2.name)
+      expect(page).to have_content(@user2.address)
+      expect(page).to have_content(@user2.city)
+      expect(page).to have_content(@user2.state)
+      expect(page).to have_content(@user2.zip)
+      expect(page).to have_content(@user2.email)
+
+      expect(page).to_not have_link("Edit Profile")
+    end
   end
 end
