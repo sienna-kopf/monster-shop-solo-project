@@ -187,13 +187,15 @@ RSpec.describe "as an admin level user" do
 
   describe "visits the merchant index page under admin namespace" do
     before :each do
-      @mike = Merchant.create(name: "Mike's Print Shop", address: '123 Paper Rd.', city: 'Denver', state: 'CO', zip: 80203, enabled?: true)
+      @mike = Merchant.create(name: "Mike's Print Shop", address: '123 Paper Rd.', city: 'Denver', state: 'CO', zip: 80203)
       @meg = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203, enabled?: false)
       @tire = @meg.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12, active?: true)
       @paper = @mike.items.create(name: "Lined Paper", description: "Great for writing on!", price: 20, image: "https://cdn.vertex42.com/WordTemplates/images/printable-lined-paper-wide-ruled.png", inventory: 35, active?: true)
       @pencil = @mike.items.create(name: "Yellow Pencil", description: "You can write on paper with it!", price: 2, image: "https://images-na.ssl-images-amazon.com/images/I/31BlVr01izL._SX425_.jpg", inventory: 100, active?: true)
 
       @user = User.create!(name: "Nick", address: "123 Main St", city: "Denver", state: "CO", zip: "80439", email: "myemail@email.com", password: "password", role: 3)
+      @user1 = User.create!(name: "Rick", address: "1234 Main St", city: "New York", state: "NY", zip: "80439", email: "myemail1@email.com", password: "password", role: 1)
+      @user2 = User.create!(name: "Mick", address: "12345 Main St", city: "Trenton", state: "NJ", zip: "80439", email: "myemail2@email.com", password: "password", role: 2)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
     end
 
@@ -252,29 +254,29 @@ RSpec.describe "as an admin level user" do
       @mike.items.all? {|item| item.enabled? == true}
     end
 
-    it "can see all merchants and their city/state" do
-      visit "/admin/merchants"
+    it "can see all registered users, their name, reg date and user type" do
+      visit "/admin"
 
-      within(".merchant-#{@meg.id}") do
-        expect(page).to have_link("#{@meg.name}")
-        expect(page).to have_content("#{@meg.city}")
-        expect(page).to have_content("#{@meg.state}")
-        expect(page).to have_button("enable")
-        expect(page).to_not have_button("disable")
-
+      within("nav") do
+        click_on("All Users")
       end
 
-      within(".merchant-#{@mike.id}") do
-        expect(page).to have_link("#{@mike.name}")
-        expect(page).to have_content("#{@mike.city}")
-        expect(page).to have_content("#{@mike.state}")
-        expect(page).to have_button("disable")
-        expect(page).to_not have_button("enable")
+      expect(current_path).to eq("/admin/users")
+
+      within(".user-#{@user1.id}") do
+        expect(page).to have_link(@user1.name)
+        expect(page).to have_content(@user1.created_at)
+        expect(page).to have_content(@user1.role)
       end
 
-      click_on("#{@meg.name}")
+      within(".user-#{@user2.id}") do
+        expect(page).to have_link(@user2.name)
+        expect(page).to have_content(@user2.created_at)
+        expect(page).to have_content(@user2.role)
+        click_on("#{@user2.name}")
+      end
 
-      expect(current_path).to eq("/admin/merchants/#{@meg.id}")
+      expect(current_path).to eq("/admin/users/#{@user2.id}")
     end
   end
 end
