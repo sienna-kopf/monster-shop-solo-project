@@ -187,7 +187,7 @@ RSpec.describe "as an admin level user" do
 
   describe "visits the merchant index page under admin namespace" do
     before :each do
-      @mike = Merchant.create(name: "Mike's Print Shop", address: '123 Paper Rd.', city: 'Denver', state: 'CO', zip: 80203)
+      @mike = Merchant.create(name: "Mike's Print Shop", address: '123 Paper Rd.', city: 'Denver', state: 'CO', zip: 80203, enabled?: true)
       @meg = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203, enabled?: false)
       @tire = @meg.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12, active?: true)
       @paper = @mike.items.create(name: "Lined Paper", description: "Great for writing on!", price: 20, image: "https://cdn.vertex42.com/WordTemplates/images/printable-lined-paper-wide-ruled.png", inventory: 35, active?: true)
@@ -250,6 +250,31 @@ RSpec.describe "as an admin level user" do
       end
 
       @mike.items.all? {|item| item.enabled? == true}
+    end
+
+    it "can see all merchants and their city/state" do
+      visit "/admin/merchants"
+
+      within(".merchant-#{@meg.id}") do
+        expect(page).to have_link("#{@meg.name}")
+        expect(page).to have_content("#{@meg.city}")
+        expect(page).to have_content("#{@meg.state}")
+        expect(page).to have_button("enable")
+        expect(page).to_not have_button("disable")
+
+      end
+
+      within(".merchant-#{@mike.id}") do
+        expect(page).to have_link("#{@mike.name}")
+        expect(page).to have_content("#{@mike.city}")
+        expect(page).to have_content("#{@mike.state}")
+        expect(page).to have_button("disable")
+        expect(page).to_not have_button("enable")
+      end
+
+      click_on("#{@meg.name}")
+
+      expect(current_path).to eq("/admin/merchants/#{@meg.id}")
     end
   end
 end
