@@ -1018,7 +1018,7 @@ If your team finished all other user stories, it is expected that you will begin
 The index page indicated in these stories should be namespaced under a route "/admin". This route should only be accessible to admin users of your application. Any functionality mentioned in this epic should be performed by admin users only, and respective routes should all be namespaced under "/admin"
 
 ```
-[ ] done
+[X] done
 
 User Story 55, EXTENSION: Admin links to User's Order Show from Admin Dashboard
 
@@ -1030,7 +1030,7 @@ My URL route is "/admin/users/5/orders/15"
 ```
 
 ```
-[ ] done
+[X] done
 
 User Story 56, EXTENSION: Admin views a User's Order Show Page
 

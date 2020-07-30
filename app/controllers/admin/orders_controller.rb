@@ -4,4 +4,8 @@ class Admin::OrdersController < Admin::BaseController
     order.update(status: "shipped")
     redirect_to "/admin"
   end
+
+  def show
+    @order = Order.find(params[:order_id])
+  end
 end
