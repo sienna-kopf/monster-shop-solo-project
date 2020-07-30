@@ -23,9 +23,4 @@ class PasswordsController < ApplicationController
       redirect_to "/users/password/edit"
     end
   end
-
-  private
-  def user_params
-    params.require(:user).permit(:new_password)
-  end
 end
