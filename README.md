@@ -1030,7 +1030,7 @@ My URL route is "/admin/users/5/orders/15"
 ```
 
 ```
-[ ] done
+[X] done
 
 User Story 56, EXTENSION: Admin views a User's Order Show Page
 
