@@ -84,21 +84,21 @@ RSpec.describe "as an admin level user" do
       @user = User.create!(name: "Megan", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "12345@gmail.com", password: "password", role: 3)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
     end
-    
+
     it "allows the admin to update an order status to shipped" do
       visit "/admin"
-      
+
       within(".order-#{@order_1.id}") do
         expect(page).to have_link("Nick's Order")
         expect(page).to have_content("Order Id: #{@order_1.id}")
         expect(page).to have_content("Date Created: #{@order_1.created_at}")
       end
-      
+
       expect(page).to have_content("#{@user_1.name}'s Order")
       expect(page).to have_button("Ship")
-      
+
       click_on "Ship"
-      
+
       expect(page).to_not have_content("Ship")
     end
 
@@ -207,6 +207,10 @@ RSpec.describe "as an admin level user" do
       @user = User.create!(name: "Nick", address: "123 Main St", city: "Denver", state: "CO", zip: "80439", email: "myemail@email.com", password: "password", role: 3)
       @user1 = User.create!(name: "Rick", address: "1234 Main St", city: "New York", state: "NY", zip: "80439", email: "myemail1@email.com", password: "password", role: 1)
       @user2 = User.create!(name: "Mick", address: "12345 Main St", city: "Trenton", state: "NJ", zip: "80439", email: "myemail2@email.com", password: "password", role: 2)
+
+      @order_1 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "pending", user_id: @user1.id)
+      @order_1.item_orders.create!(item: @tire, price: @tire.price, quantity: 2)
+
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
     end
 
@@ -301,6 +305,24 @@ RSpec.describe "as an admin level user" do
       expect(page).to have_content(@user2.email)
 
       expect(page).to_not have_link("Edit Profile")
+    end
+
+    it "can view an admin only show page for an order" do
+      visit "/admin"
+
+      within(".order-#{@order_1.id}") do
+        click_link "#{@order_1.id}"
+      end
+
+      expect(current_path).to eq("/admin/users/#{@user1.id}/orders/#{@order_1.id}")
+
+      expect(page).to have_content("Information for Order Number: #{@order_1.id}")
+      expect(page).to have_content("Placed By: #{@order_1.name}")
+      expect(page).to have_content("Recipents Address: #{@order_1.address}")
+      expect(page).to have_content("Recipents City: #{@order_1.city}")
+      expect(page).to have_content("Recipents State: #{@order_1.state}")
+      expect(page).to have_content("Recipents Zip: #{@order_1.zip}")
+      expect(page).to have_content("Order Status: #{@order_1.status}")
     end
   end
 end

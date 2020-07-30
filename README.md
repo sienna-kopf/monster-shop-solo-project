@@ -25,11 +25,11 @@ Regular User: (or create your own!)
 Merchent Employee: Employed by "Meg's Paper Shop"    
     * Email: merchant_1_user@email.com  
     * Password: password  
-    
+
 Merchent Employee: Emplyed by "Brian's Dog Shop"  
     * Email: merchant_3_user@email.com  
     * Password: password  
-    
+
 Admin:   
     * Email: admin_user@email.com  
     * Password: password  
@@ -53,7 +53,7 @@ This diagram shows all of our database tables and how they're linked to one anot
 
 
 ---
-## Learning Goals (*NOTE this section was left from Turing's original project goals) 
+## Learning Goals (*NOTE this section was left from Turing's original project goals)
 
 ### Rails
 * Create routes for namespaced routes
@@ -1018,7 +1018,7 @@ If your team finished all other user stories, it is expected that you will begin
 The index page indicated in these stories should be namespaced under a route "/admin". This route should only be accessible to admin users of your application. Any functionality mentioned in this epic should be performed by admin users only, and respective routes should all be namespaced under "/admin"
 
 ```
-[ ] done
+[X] done
 
 User Story 55, EXTENSION: Admin links to User's Order Show from Admin Dashboard
 
