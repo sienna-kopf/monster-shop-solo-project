@@ -39,11 +39,10 @@ RSpec.describe 'review edit and update', type: :feature do
       expect(current_path).to eq("/reviews/#{review_1.id}/edit")
       expect(find_field(:title).value).to eq(review_1.title)
       expect(find_field(:content).value).to eq(review_1.content)
-      expect(find_field(:rating).value).to eq(review_1.rating.to_s)
 
       fill_in :title, with: title
       fill_in :content, with: content
-      fill_in :rating, with: rating
+      select "4", :from => "rating"
 
       click_on "Update Review"
 
@@ -66,6 +65,8 @@ RSpec.describe 'review edit and update', type: :feature do
       end
 
       fill_in :title, with: title
+      select "5", :from => "rating"
+
 
       click_on "Update Review"
 

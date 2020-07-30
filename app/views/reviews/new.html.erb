@@ -8,8 +8,15 @@
     <%= label_tag :content %>
     <%= text_field_tag :content %>
 
-    <%= label_tag :rating%>
-    <%= text_field_tag :rating%>
+    <label for="rating">Select a Rating:</label>
+    <select name="rating" id="rating">
+      <option value="0">0</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select><br><br>
 
     <%= submit_tag 'Create Review' %>
   <% end %>

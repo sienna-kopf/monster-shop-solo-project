@@ -12,7 +12,7 @@ Created By:
     * `bundle install`  
     * `rails db:reset`   
 
-When you run `rspec` you should have 179 passing tests.  
+When you run `rspec` you should have 180 passing tests.  
 
 To view this Application already running on Heroku click [here!](https://monster-shop-2005.herokuapp.com/)  
 
