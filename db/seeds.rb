@@ -8,6 +8,7 @@
 
 Merchant.destroy_all
 Item.destroy_all
+User.destroy_all
 
 #merchants
 merchant_1 = Merchant.create(name: "Meg's Paper Shop", address: '123 Paper Rd.', city: 'Denver', state: 'CO', zip: 80203)
@@ -31,3 +32,10 @@ pull_toy = merchant_3.items.create(name: "Pull Toy", description: "Great pull to
 dog_bone = merchant_3.items.create(name: "Dog Bone", description: "They'll love it!", price: 21, image: "https://img.chewy.com/is/image/catalog/54226_MAIN._AC_SL1500_V1534449573_.jpg", inventory: 21)
 stuffed_animal = merchant_3.items.create(name: "Stuffed Animal", description: "Your dogs favorite cuddle buddy", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSdrF1u_GSYOgpnRJ-2EC87fkfF8sVBC2LZ4A&usqp=CAU", price: 15, inventory: 15)
 leash = merchant_3.items.create(name: "Leash", description: "Keep your dog close by", price: 15, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSdrF1u_GSYOgpnRJ-2EC87fkfF8sVBC2LZ4A&usqp=CAU", inventory: 5)
+
+# users
+
+default_user = User.create!(name: "Nick", address: "123 Main St", city: "Denver", state: "CO", zip: "80439", email: "default_user@email.com", password: "password", role: 1)
+merchant_1_user = User.create!(name: "Megan", address: "123 North St", city: "Salt Lake City", state: "UT", zip: "89383", email: "merchant_1_user@email.com", password: "password", role: 2, merchant_id: merchant_1.id)
+merchant_3_user = User.create!(name: "Rachel", address: "123 East St", city: "Orangeville", state: "CA", zip: "84443", email: "merchant_3_user@email.com", password: "password", role: 2, merchant_id: merchant_3.id)
+admin_user = User.create!(name: "Lola", address: "123 South St", city: "Walla Walla", state: "WA", zip: "88888", email: "admin_user@email.com", password: "password", role: 3)
