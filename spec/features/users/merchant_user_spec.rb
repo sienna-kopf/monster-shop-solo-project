@@ -48,9 +48,9 @@ RSpec.describe "as a merchant level user" do
     @tire = @merchant2.items.create(name: "Gatorskins", description: "They'll never pop!", price: 100, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 12)
     @paper = @merchant1.items.create(name: "Lined Paper", description: "Great for writing on!", price: 20, image: "https://cdn.vertex42.com/WordTemplates/images/printable-lined-paper-wide-ruled.png", inventory: 35)
     @pencil = @merchant1.items.create(name: "Yellow Pencil", description: "You can write on paper with it!", price: 2, image: "https://images-na.ssl-images-amazon.com/images/I/31BlVr01izL._SX425_.jpg", inventory: 100)
-
     @user = User.create(name: "Megan", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "12345@gmail.com", password: "password", role: 2, merchant_id: @merchant1.id)
-
+    @order = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "packaged", user_id: @user.id)
+    @order.item_orders.create!(item: @tire, price: @tire.price, quantity: 2)
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
 
     end
@@ -69,7 +69,89 @@ RSpec.describe "as a merchant level user" do
       click_on "My Items"
 
       expect(current_path).to eq("/merchant/items")
-    end 
+    end
+    
+    it "can activate and deactivate store items" do
+      visit "/merchant"
+      
+      click_link "My Items"
+      
+      expect(page).to_not have_button("Activate")
+      
+      click_on('Deactivate', match: :first)
+
+      expect(page).to have_button("Activate")
+      
+      click_on('Activate', match: :first)
+      
+      expect(page).to_not have_content("Activate")
+    
+    end
+    
+    it "can delete stored items" do
+
+      visit "/merchants/#{@merchant1.id}/items"
+    
+      click_on("#{@paper.name}", match: :first)
+      
+      expect(page).to have_content("#{@paper.name}")
+      click_link "Delete Item"
+      
+      expect(page).to_not have_content("#{@paper.name}")
+    
+    end
+    
+    it "can fulfill orders" do
+      visit "/merchant/orders/#{@order.id}"
+      within ".order-item-#{@tire.id}" do
+        click_on "Fulfill Order"
+      end
+      save_and_open_page
+      
+      expect(page).to have_content("#{@tire.name}")
+      
+      # visit "/items"
+      #
+      # click_on("#{@tire.name}", match: :first)
+      # expect(current_path).to eq("/items/#{@tire.id}")
+      # click_on "Add To Cart"
+      #
+      # within 'nav' do
+      #   click_on "Cart: 1"
+      # end
+      # expect(current_path).to eq("/cart")
+      #
+      # click_on "Checkout"
+      #
+      # fill_in :name, with: "Lance Armstrong"
+      # fill_in :address, with: "124 Main St."
+      # fill_in :city, with: "Denver"
+      # fill_in :state, with: "CO"
+      # fill_in :zip, with: "33350"
+      #
+      # click_button "Create Order"
+      #
+      # expect(current_path).to eq("/profile/orders")
+      #
+      # within 'nav' do
+      #   click_on "Dashboard"
+      # end
+      #
+      # save_and_open_page
+      #
+      # within 'nav' do
+      #   click_on "Dashboard"
+      # end
+      # visit "/merchant"
+      # click_on("Order Id: #{@order.id}", match: :first)
+      #
+      # expect(page).to have_content("#{@paper.name}")
+      #
+      # click_link "Delete Item"
+      #
+      # expect(page).to_not have_content("#{@paper.name}")
+      #
+    end
   end
 
   describe "in the merchant dashboard, i see any pending orders for my store" do

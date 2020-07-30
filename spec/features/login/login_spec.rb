@@ -215,6 +215,52 @@ RSpec.describe "User login" do
       expect(page).to have_content("You have successfully logged out.")
       expect(current_path).to eq("/")
     end
+    
+    it "i am given an error message if when changing passwords the current password does not match" do
+      @meg = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
+      @user = User.create!(name: "Nick", address: "123 Main St", city: "Denver", state: "CO", zip: "80439", email: "myemailisgreat@email.com", password: "password", role: 2, merchant_id: @meg.id)
+      visit "/login"
+      fill_in :email, with: "myemailisgreat@email.com"
+      fill_in :password, with: "password"
+
+      click_on "Log In"
+
+      within 'nav' do
+        click_on "Profile"
+      end
+      
+      click_on "Edit Password"
+      
+      fill_in :current_password, with: "wrong_password"
+      fill_in :new_password, with: "new_password"
+      fill_in :new_password, with: "new_password"
+      click_on "Update Password"
+      
+      expect(page).to have_content("Current Password does not match.")
+    end
+    
+    it "i am given an error message if when changing passwords the new password and its confirmation do not match" do
+      @meg = Merchant.create(name: "Meg's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
+      @user = User.create!(name: "Nick", address: "123 Main St", city: "Denver", state: "CO", zip: "80439", email: "myemailisgreat@email.com", password: "password", role: 2, merchant_id: @meg.id)
+      visit "/login"
+      fill_in :email, with: "myemailisgreat@email.com"
+      fill_in :password, with: "password"
+
+      click_on "Log In"
+
+      within 'nav' do
+        click_on "Profile"
+      end
+      
+      click_on "Edit Password"
+      
+      fill_in :current_password, with: "password"
+      fill_in :new_password, with: "new_password"
+      fill_in :new_password, with: "newwwwww_password"
+      click_on "Update Password"
+    
+      expect(page).to have_content("New password does not match.")
+    end
   end
 
   describe "as an admin user" do
