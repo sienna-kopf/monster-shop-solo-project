@@ -20,14 +20,14 @@ RSpec.describe 'review creation', type: :feature do
         title = "Thanks Brian's Bike Shop!"
         content = "Took my bike in for a service and all is working well!"
         rating = 5
-
+        
         visit "/items/#{@chain.id}"
 
         click_on "Add Review"
 
         fill_in :title, with: title
         fill_in :content, with: content
-        fill_in :rating, with: rating
+        select "5", :from => "rating"
 
         click_button "Create Review"
 
@@ -45,14 +45,14 @@ RSpec.describe 'review creation', type: :feature do
 
       it "I cannot create a review unless I complete the whole form" do
         title = "Thanks Brian's Bike Shop!"
-        rating = 5
+
 
         visit "/items/#{@chain.id}"
 
         click_on "Add Review"
 
         fill_in :title, with: title
-        fill_in :rating, with: rating
+        select "5", :from => "rating"
 
         click_on "Create Review"
 
@@ -62,7 +62,6 @@ RSpec.describe 'review creation', type: :feature do
 
       it 'I get an error if my rating is not between 1 and 5' do
         title = "Thanks Brian's Bike Shop!"
-        rating = 6
         content = "SO FUN SO GREAT"
 
         visit "/items/#{@chain.id}"
@@ -71,7 +70,8 @@ RSpec.describe 'review creation', type: :feature do
 
         fill_in :title, with: title
         fill_in :content, with: content
-        fill_in :rating, with: rating
+        select "0", :from => "rating"
+
 
         click_on "Create Review"
 
