@@ -29,6 +29,10 @@ RSpec.describe Cart do
         @giant.id.to_s => 2,
         @hippo.id.to_s => 1
         })
+
+      expect(@cart.add_item(@hippo.id.to_s)).to eq(2)
+      expect(@cart.add_item(@giant.id.to_s)).to eq(3)
+      expect(@cart.add_item(@ogre.id.to_s)).to eq(2)
     end
 
     it '.total_items' do

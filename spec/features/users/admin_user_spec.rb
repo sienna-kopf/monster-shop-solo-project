@@ -84,6 +84,23 @@ RSpec.describe "as an admin level user" do
       @user = User.create!(name: "Megan", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "12345@gmail.com", password: "password", role: 3)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
     end
+    
+    it "allows the admin to update an order status to shipped" do
+      visit "/admin"
+      
+      within(".order-#{@order_1.id}") do
+        expect(page).to have_link("Nick's Order")
+        expect(page).to have_content("Order Id: #{@order_1.id}")
+        expect(page).to have_content("Date Created: #{@order_1.created_at}")
+      end
+      
+      expect(page).to have_content("#{@user_1.name}'s Order")
+      expect(page).to have_button("Ship")
+      
+      click_on "Ship"
+      
+      expect(page).to_not have_content("Ship")
+    end
 
     it "sees every order in the system with information on the order ad its status" do
       visit "/admin"
@@ -177,12 +194,6 @@ RSpec.describe "as an admin level user" do
 
       expect(current_path).to eq("/merchants/#{@mike.id}/items")
     end
-# As an admin
-# When I visit the admin's merchant index page ('/admin/merchants')
-# I see a "disable" button next to any merchants who are not yet disabled
-# When I click on the "disable" button
-# I am returned to the admin's merchant index page where I see that the merchant's account is now disabled
-# And I see a flash message that the merchant's account is now disabled
   end
 
   describe "visits the merchant index page under admin namespace" do
