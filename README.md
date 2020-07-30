@@ -22,14 +22,14 @@ Regular User: (or create your own!)
     * Password: password  
 
 *Note: The following log in levels can not be created and must be used for any higher level access*  
-Merchent Employee: Employed by "Meg's Paper Shop"    
+Merchant Employee: Employed by "Meg's Paper Shop"    
     * Email: merchant_1_user@email.com  
     * Password: password  
-    
-Merchent Employee: Emplyed by "Brian's Dog Shop"  
+
+Merchant Employee: Emplyed by "Brian's Dog Shop"  
     * Email: merchant_3_user@email.com  
     * Password: password  
-    
+
 Admin:   
     * Email: admin_user@email.com  
     * Password: password  
@@ -53,7 +53,7 @@ This diagram shows all of our database tables and how they're linked to one anot
 
 
 ---
-## Learning Goals (*NOTE this section was left from Turing's original project goals) 
+## Learning Goals (*NOTE this section was left from Turing's original project goals)
 
 ### Rails
 * Create routes for namespaced routes
