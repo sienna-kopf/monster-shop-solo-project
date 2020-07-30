@@ -70,88 +70,36 @@ RSpec.describe "as a merchant level user" do
 
       expect(current_path).to eq("/merchant/items")
     end
-    
+
     it "can activate and deactivate store items" do
       visit "/merchant"
-      
+
       click_link "My Items"
-      
+
       expect(page).to_not have_button("Activate")
-      
+
       click_on('Deactivate', match: :first)
 
       expect(page).to have_button("Activate")
-      
+
       click_on('Activate', match: :first)
-      
+
       expect(page).to_not have_content("Activate")
-    
+
     end
-    
+
     it "can delete stored items" do
 
       visit "/merchants/#{@merchant1.id}/items"
-    
+
       click_on("#{@paper.name}", match: :first)
-      
+
       expect(page).to have_content("#{@paper.name}")
       click_link "Delete Item"
-      
+
       expect(page).to_not have_content("#{@paper.name}")
-    
     end
-    
-    it "can fulfill orders" do
-      visit "/merchant/orders/#{@order.id}"
-      within ".order-item-#{@tire.id}" do
-        click_on "Fulfill Order"
-      end
-      save_and_open_page
-      
-      expect(page).to have_content("#{@tire.name}")
-      
-      # visit "/items"
-      #
-      # click_on("#{@tire.name}", match: :first)
-      # expect(current_path).to eq("/items/#{@tire.id}")
-      # click_on "Add To Cart"
-      #
-      # within 'nav' do
-      #   click_on "Cart: 1"
-      # end
-      # expect(current_path).to eq("/cart")
-      #
-      # click_on "Checkout"
-      #
-      # fill_in :name, with: "Lance Armstrong"
-      # fill_in :address, with: "124 Main St."
-      # fill_in :city, with: "Denver"
-      # fill_in :state, with: "CO"
-      # fill_in :zip, with: "33350"
-      #
-      # click_button "Create Order"
-      #
-      # expect(current_path).to eq("/profile/orders")
-      #
-      # within 'nav' do
-      #   click_on "Dashboard"
-      # end
-      #
-      # save_and_open_page
-      #
-      # within 'nav' do
-      #   click_on "Dashboard"
-      # end
-      # visit "/merchant"
-      # click_on("Order Id: #{@order.id}", match: :first)
-      #
-      # expect(page).to have_content("#{@paper.name}")
-      #
-      # click_link "Delete Item"
-      #
-      # expect(page).to_not have_content("#{@paper.name}")
-      #
-    end
+
   end
 
   describe "in the merchant dashboard, i see any pending orders for my store" do
