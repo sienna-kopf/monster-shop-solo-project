@@ -1,13 +1,41 @@
 # Monster Shop
-BE Mod 2 Week 4/5 Group Project
+BE Mod 2 Week 4/5 Group Project  
+Created By:  
+[Sienna Kopf](https://github.com/sienna-kopf)  
+[Garrett Gerdsen](https://github.com/ggerdsen)  
+[Nick Edwin](https://github.com/NickEdwin)  
+
+## To Setup Locally   
+* Clone this repo by running the following commands in your terminal:  
+    * `git clone git@github.com:ggerdsen/monster_shop_2005.git`  
+    * `cd monster_shop_2005`  
+    * `bundle install`  
+    * `rails db:reset`   
+
+When you run `rspec` you should have 170 passing tests.  
+
+To view this Application already running on Heroku click [here!](https://monster-shop-2005.herokuapp.com/)  
 
 ## Background and Description
 
-"Monster Shop" is a fictitious e-commerce platform where users can register to place items into a shopping cart and 'check out'. Users who work for a merchant can mark their items as 'fulfilled'; the last merchant to mark items in an order as 'fulfilled' will be able to get "shipped" by an admin. Each user role will have access to some or all CRUD functionality for application models.
+"Monster Shop" is a fictitious e-commerce platform where users can register to place items into a shopping cart and 'check out'. Users who work for a merchant can mark their items as 'fulfilled'; the last merchant to mark items in an order as 'fulfilled' will be able to get "shipped" by an admin. Each user role will have access to some or all CRUD functionality for application models.  
 
-Students will be put into 3 or 4 person groups to complete the project.\n
+This application was built using the following languages/protocols:  
+Ruby 2.5.3  
+Rails 5.1.7  
+HTML / CSS  
+PostresSQL  
+ActiveRecord / SQL  
+The Ruby gem `bycrpyt` was used for SHA256 password encryption  
 
-## Learning Goals
+
+## Visual Representation of Schema   
+This diagram shows all of our database tables and how they're linked to one another.  
+![Visual Schema](https://i.imgur.com/FAhLfhp.png)
+
+
+---
+## Learning Goals (*NOTE this section was left from Turing's original project goals) 
 
 ### Rails
 * Create routes for namespaced routes

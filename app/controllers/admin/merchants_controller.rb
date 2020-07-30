@@ -11,13 +11,13 @@ class Admin::MerchantsController < Admin::BaseController
     merchant = Merchant.find(params[:id])
     if merchant.enabled?
       merchant.toggle(:enabled?)
-      merchant.items.update(enabled?: false)
+      merchant.items.update(active?: false)
       if merchant.save
         flash[:success] = "#{merchant.name} and all merchant items have been disabled"
       end
     else
       merchant.toggle(:enabled?)
-      merchant.items.update(enabled?: true)
+      merchant.items.update(active?: true)
       if merchant.save
         flash[:success] = "#{merchant.name} has been enabled"
       end
