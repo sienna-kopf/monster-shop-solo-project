@@ -22,11 +22,11 @@ Regular User: (or create your own!)
     * Password: password  
 
 *Note: The following log in levels can not be created and must be used for any higher level access*  
-Merchent Employee: Employed by "Meg's Paper Shop"    
+Merchant Employee: Employed by "Meg's Paper Shop"    
     * Email: merchant_1_user@email.com  
     * Password: password  
 
-Merchent Employee: Emplyed by "Brian's Dog Shop"  
+Merchant Employee: Emplyed by "Brian's Dog Shop"  
     * Email: merchant_3_user@email.com  
     * Password: password  
 
