@@ -323,6 +323,18 @@ RSpec.describe "as an admin level user" do
       expect(page).to have_content("Recipents State: #{@order_1.state}")
       expect(page).to have_content("Recipents Zip: #{@order_1.zip}")
       expect(page).to have_content("Order Status: #{@order_1.status}")
+
+      within ".order-item-#{@tire.id}" do
+        expect(page).to have_content("#{@tire.name}")
+        expect(page).to have_content("Description: #{@tire.description}")
+        expect(page).to have_content("Quantity Ordered: 2")
+        expect(page).to have_content("Item Price: $100.00")
+        expect(page).to have_css("img[src*='#{@tire.image}']")
+        expect(page).to have_content("Subtotal for #{@tire.name}: $200.00")
+      end
+
+      expect(page).to have_content("Total Number of Items Ordered: 2")
+      expect(page).to have_content("Order Total: $200.00")
     end
   end
 end
