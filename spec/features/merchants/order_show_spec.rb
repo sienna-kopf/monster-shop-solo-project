@@ -92,6 +92,35 @@ RSpec.describe "As a user" do
           expect(page).to have_content("Can not fulfill order due to lack of inventory.")
         end
       end
+
+      it "can fully fulfill an order and change status to packaged" do
+        order_2 = Order.create!(name: 'Rick', address: '123 Rick St', city: 'Hershey', state: 'PA', zip: 80218, user_id: @user.id)
+
+        order_2.item_orders.create!(item: @frame, price: @frame.price, quantity: 2)
+
+        visit "/merchant/orders/#{order_2.id}"
+
+        within ".order-item-#{@frame.id}" do
+          click_on "Fulfill Order"
+        end
+
+        user_admin = User.create(name: "Rick", address: "123 Rick st", city: "Denver", state: "Colorado", zip: "80401", email: "1234567@gmail.com", password: "password", role: 3)
+
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user_admin)
+
+        visit "/admin"
+
+        within ".order-#{order_2.id}" do
+          expect(page).to have_content("Order Status: packaged")
+          click_on "Ship"
+        end
+
+        expect(current_path).to eq("/admin")
+
+        within ".order-#{order_2.id}" do
+          expect(page).to have_content("Order Status: shipped")
+        end
+      end
     end
   end
 end
