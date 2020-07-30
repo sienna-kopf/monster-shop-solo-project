@@ -8,6 +8,7 @@
           <p> <%= link_to "#{User.find(order.user_id).name}'s Order", "/admin/users/#{User.find(order.user_id).id}" %></p>
           <p>Order Id: <%= order.id %></p>
           <p>Date Created: <%= order.created_at %></p>
+          <p>Order Status: <%= order.status %> </p>
           <% if order.status == "packaged" %>
             <%= button_to "Ship", "/admin/orders/#{order.id}/update", method: :patch %>
           <% end %>
