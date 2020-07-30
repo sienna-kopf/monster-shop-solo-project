@@ -12,9 +12,27 @@ Created By:
     * `bundle install`  
     * `rails db:reset`   
 
-When you run `rspec` you should have 170 passing tests.  
+When you run `rspec` you should have 179 passing tests.  
 
 To view this Application already running on Heroku click [here!](https://monster-shop-2005.herokuapp.com/)  
+
+For pre-loaded users you can log in with the following information:  
+Regular User: (or create your own!)  
+    * Email: default_user@email.com  
+    * Password: password  
+
+*Note: The following log in levels can not be created and must be used for any higher level access*  
+Merchent Employee: Employed by "Meg's Paper Shop"    
+    * Email: merchant_1_user@email.com  
+    * Password: password  
+    
+Merchent Employee: Emplyed by "Brian's Dog Shop"  
+    * Email: merchant_3_user@email.com  
+    * Password: password  
+    
+Admin:   
+    * Email: admin_user@email.com  
+    * Password: password  
 
 ## Background and Description
 
