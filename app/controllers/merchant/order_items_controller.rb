@@ -10,6 +10,7 @@ class Merchant::OrderItemsController < Merchant::BaseController
       redirect_to "/merchant/orders/#{order.id}"
       flash[:success] = "Item is now fulfilled"
     end
+    ## use AR where to check
     if order.item_orders.all? {|item_order| item_order.status == "fulfilled" }
       order.update(status: "packaged")
     end

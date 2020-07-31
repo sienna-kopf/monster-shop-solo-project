@@ -3,6 +3,8 @@ class Merchant::ItemsController < Merchant::BaseController
   def index
     @merchant = Merchant.find(current_user.merchant_id)
     @items = @merchant.items
+
+    # only send one thing to view
   end
 
   def update
@@ -19,6 +21,7 @@ class Merchant::ItemsController < Merchant::BaseController
   end
 
   def delete
+    ## add conditional logic here to make sure it cant be deleted
     item = Item.find(params[:id])
     item.delete
     flash[:sucess] = "#{item.name} was sucessfully deleted"
