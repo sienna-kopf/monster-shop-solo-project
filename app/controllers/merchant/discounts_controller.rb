@@ -20,7 +20,7 @@ class Merchant::DiscountsController < Merchant::BaseController
       flash[:success] = "Discount has successfully been created!"
       redirect_to "/merchant/discounts"
     else
-      flash[:error] = "Discount failed to be created."
+      flash[:error] = discount.errors.full_messages.to_sentence
       redirect_to "/merchant/discounts/new"
     end
   end
