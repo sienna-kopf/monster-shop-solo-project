@@ -4,3 +4,4 @@
 <p>Item Quantity: <%= @discount.item_quantity %> items</p>
 
 <%= link_to "Update Discount", "/merchant/discounts/#{@discount.id}/edit" %>
+<%= link_to "Delete Discount", "/merchant/discounts/#{@discount.id}", method: :delete %>
