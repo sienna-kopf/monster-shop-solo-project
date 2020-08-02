@@ -2,3 +2,5 @@
 
 <p>Percentage Discount: <%= @discount.percentage_discount %>%</p>
 <p>Item Quantity: <%= @discount.item_quantity %> items</p>
+
+<%= link_to "Update Discount", "/merchant/discounts/#{@discount.id}/edit" %>
