@@ -64,6 +64,9 @@ Rails.application.routes.draw do
 
     patch "/orders/:order_id/items/:item_id/update", to: "order_items#update"
 
+    get "/discounts/new", to: "discounts#new"
+    post "/discounts", to: "discounts#create"
+
     get "/discounts", to: "discounts#index"
     get "/discounts/:discount_id", to: "discounts#show"
   end
