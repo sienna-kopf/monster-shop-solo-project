@@ -63,6 +63,9 @@ Rails.application.routes.draw do
     post "/items", to: "items#create"
 
     patch "/orders/:order_id/items/:item_id/update", to: "order_items#update"
+
+    get "/discounts", to: "discounts#index"
+    get "/discounts/:discount_id", to: "discounts#show"
   end
 
   namespace :admin do
