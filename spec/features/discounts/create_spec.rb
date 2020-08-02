@@ -36,5 +36,22 @@ RSpec.describe "from the discounts index page" do
         expect(page).to have_link("Discount #{new_discount.id}")
       end
     end
+
+    it "relays error messages when form is sumbitted incomplete" do
+      visit "/merchant/discounts"
+
+      click_on "Create New Discount"
+
+      expect(current_path).to eq("/merchant/discounts/new")
+
+      fill_in :percentage_discount, with: ""
+      fill_in :item_quantity, with: ""
+
+      click_on "Add Discount"
+
+      expect(current_path).to eq("/merchant/discounts/new")
+      expect(page).to have_content("Percentage discount can't be blank")
+      expect(page).to have_content("Item quantity can't be blank")
+    end
   end
 end
