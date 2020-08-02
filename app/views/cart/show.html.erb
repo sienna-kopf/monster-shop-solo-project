@@ -36,9 +36,16 @@
           <p><%= link_to "Remove", "/cart/#{item.id}",method: :delete %></p>
         </center>
         </td>
+      <% discount = Discount.find_by(merchant_id: item.merchant_id) %>
+      <% item_order = ItemOrder.find_by(item_id: item.id) %>
+      <% if discount.item_quantity == quantity %>
+        <p>Discount of <%= discount.percentage_discount %>% off <%= discount.item_quantity %> items has been applied to <%= item.name %></p>
+        <p><%=number_to_currency(cart.subtotal(item) - (cart.subtotal(item) / discount.percentage_discount))%></p>
+      <% else %>
       <td>
         <p><%=number_to_currency(cart.subtotal(item))%></p>
       </td>
+      <% end %>
     </tr>
   <% end %>
 </table>
