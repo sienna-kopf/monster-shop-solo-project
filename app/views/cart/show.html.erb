@@ -25,9 +25,19 @@
           <%=link_to item.merchant.name, "/merchants/#{item.merchant.id}"%>
         </p>
       </td>
+      <% discount = Discount.find_by(merchant_id: item.merchant_id) %>
+      <% item_order = ItemOrder.find_by(item_id: item.id) %>
+      <% if !discount.nil? && discount.item_quantity == quantity %>
       <td>
-        <p><%=number_to_currency(item.price)%></p>
+        <p><%= number_to_currency(item.price - (item.price / discount.percentage_discount))%></p>
+        <p>Item price has been adjusted due to discount!</p>
+        <% item.price -= (item.price / discount.percentage_discount) %>
       </td>
+      <% else %>
+      <td>
+        <p><%= number_to_currency(item.price) %></p>
+      </td>
+      <% end %>
       <td>
         <center>
           <p><%=quantity%></p>
@@ -36,11 +46,9 @@
           <p><%= link_to "Remove", "/cart/#{item.id}",method: :delete %></p>
         </center>
         </td>
-      <% discount = Discount.find_by(merchant_id: item.merchant_id) %>
-      <% item_order = ItemOrder.find_by(item_id: item.id) %>
-      <% if discount.item_quantity == quantity %>
+      <% if !discount.nil? && discount.item_quantity == quantity %>
         <p>Discount of <%= discount.percentage_discount %>% off <%= discount.item_quantity %> items has been applied to <%= item.name %></p>
-        <p><%=number_to_currency(cart.subtotal(item) - (cart.subtotal(item) / discount.percentage_discount))%></p>
+        <p><%=number_to_currency(cart.subtotal(item))%></p>
       <% else %>
       <td>
         <p><%=number_to_currency(cart.subtotal(item))%></p>
@@ -49,9 +57,15 @@
     </tr>
   <% end %>
 </table>
-  <p>Total: <%= number_to_currency(cart.total) %></p>
-  <p><%= link_to "Empty Cart", "/cart", method: :delete %></p>
-  <p><%= link_to "Checkout", "/orders/new", method: :get %></p>
+  <% if @discounts.empty? %>
+    <p>Total: <%= number_to_currency(cart.total) %></p>
+    <p><%= link_to "Empty Cart", "/cart", method: :delete %></p>
+    <p><%= link_to "Checkout", "/orders/new", method: :get %></p>
+  <% else %>
+    <p>Total: <%= number_to_currency(cart.discount_total) %></p>
+    <p><%= link_to "Empty Cart", "/cart", method: :delete %></p>
+    <p><%= link_to "Checkout", "/orders/new", method: :get %></p>
+  <% end  %>
 <% else %>
   <h3 align= "center">Cart is currently empty</h3>
 <% end %>
