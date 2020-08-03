@@ -32,4 +32,14 @@ class Cart
     end
   end
 
+  def discount_total
+    items.sum do |item, quantity|
+      discount = Discount.find_by(merchant_id: item.merchant_id)
+      if item.merchant_id == discount.merchant_id && quantity == discount.item_quantity
+        (item.price - (item.price / discount.percentage_discount)) * quantity
+      else
+        item.price * quantity
+      end
+    end
+  end
 end
