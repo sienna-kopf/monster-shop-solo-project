@@ -11,6 +11,12 @@ class CartController < ApplicationController
 
   def show
     @items = cart.items
+    @discounts = []
+    @items.each do |item, quantity|
+      if !Discount.find_by(merchant_id: item.merchant_id).nil? && !@discounts.include?(Discount.find_by(merchant_id: item.merchant_id))
+        @discounts << Discount.find_by(merchant_id: item.merchant_id)
+      end
+    end
   end
 
   def empty
