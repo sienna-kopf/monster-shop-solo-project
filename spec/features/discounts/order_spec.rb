@@ -90,5 +90,72 @@ RSpec.describe "when a user clicks on checkout" do
        expect(page).to have_field(:zip)
        expect(page).to have_button("Create Order")
     end
+
+    it "creates an order in which the item order price is updated appropriatly" do
+      visit "/items/#{@paper.id}"
+      click_on "Add To Cart"
+      visit "/items/#{@pencil.id}"
+      click_on "Add To Cart"
+
+      visit "/cart"
+
+      within("#cart-item-#{@paper.id}") do
+        click_on "Increase Amount"
+        click_on "Increase Amount"
+        click_on "Increase Amount"
+        click_on "Increase Amount"
+        click_on "Increase Amount"
+        click_on "Increase Amount"
+        click_on "Increase Amount"
+        click_on "Increase Amount"
+        click_on "Increase Amount"
+      end
+
+      within("#cart-item-#{@pencil.id}") do
+        click_on "Increase Amount"
+        click_on "Increase Amount"
+        click_on "Increase Amount"
+        click_on "Increase Amount"
+        click_on "Increase Amount"
+      end
+
+       click_on "Checkout"
+
+       fill_in :name, with: "Cecily"
+       fill_in :address, with: "123 mate St."
+       fill_in :city, with: "Denver"
+       fill_in :state, with: "CO"
+       fill_in :zip, with: "88888"
+
+       click_on "Create Order"
+
+       new_order = Order.last
+
+       expect(current_path).to eq("/profile/orders")
+
+       within "#date-created" do
+         expect(page).to have_content(new_order.created_at)
+       end
+
+       within "#date-updated" do
+         expect(page).to have_content(new_order.updated_at)
+       end
+
+       within "#order-status" do
+         expect(page).to have_content("pending")
+       end
+
+       within "#order-quantity" do
+         expect(page).to have_content("2")
+       end
+
+       within "#grand-total" do
+         expect(page).to have_content("Total Cost: $192.00")
+       end
+
+       within 'nav' do
+         expect(page).to have_content("Cart: 0")
+       end
+    end
   end
 end
