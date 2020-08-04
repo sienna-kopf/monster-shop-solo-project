@@ -19,7 +19,7 @@ merchant_3 = Merchant.create(name: "Brian's Dog Shop", address: '125 Doggo St.',
 #discounts
 off_5 = Discount.create(percentage_discount: 5, item_quantity: 5, merchant_id: merchant_3.id)
 
-off_10 = Discount.create(percentage_discount: 10, item_quantity: 10, merchant_id: merchant_3.id)
+off_10 = Discount.create(percentage_discount: 15, item_quantity: 10, merchant_id: merchant_3.id)
 
 #paper_shop_items
 paper = merchant_1.items.create(name: "Lined Paper", description: "Great for writing on!", price: 20, image: "https://cdn.vertex42.com/WordTemplates/images/printable-lined-paper-wide-ruled.png", inventory: 35)

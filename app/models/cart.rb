@@ -57,7 +57,7 @@ class Cart
   end
 
   def discount_applies
-    @contents.any? do |item_id|
+    @contents.any? do |item_id, quantity|
       has_discount(Item.find_by(id: item_id))
     end
   end
