@@ -27,7 +27,7 @@
       </td>
       <% if cart.has_discount(item) %>
       <td>
-        <p><%= number_to_currency(item.discount_price)%></p>
+        <p><%= number_to_currency(cart.discount_price(item))%></p>
         <p>Item price has been adjusted due to discount!</p>
       </td>
       <% else %>
@@ -44,7 +44,7 @@
         </center>
       </td>
       <% if cart.has_discount(item) %>
-        <p>Discount of <%= cart.discount(item).percentage_discount %>% off <%= cart.discount(item).item_quantity %> items has been applied to <%= item.name %></p>
+        <p>Discount of <%= cart.best_discount(item).percentage_discount %>% off <%= cart.best_discount(item).item_quantity %> items has been applied to <%= item.name %></p>
         <p><%=number_to_currency(cart.discount_subtotal(item))%></p>
       <% else %>
       <td>
