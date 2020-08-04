@@ -27,7 +27,7 @@ class Cart
   end
 
   def discount_subtotal(item)
-    item.discount_price * @contents[item.id.to_s]
+    discount_price(item) * @contents[item.id.to_s]
   end
 
   def total
@@ -40,7 +40,7 @@ class Cart
     if discount_applies
       @contents.sum do |item_id, quantity|
         if has_discount(Item.find_by(id: item_id))
-          Item.find(item_id).discount_price * quantity
+          discount_price(Item.find(item_id)) * quantity
         else
           Item.find(item_id).price * quantity
         end
@@ -52,15 +52,26 @@ class Cart
     !Discount.find_by(merchant_id: item.merchant_id).nil? && Discount.find_by(merchant_id: item.merchant_id).item_quantity <= items[item]
   end
 
-  def discount(item)
-    if has_discount(item)
-      Discount.find_by(merchant_id: item.merchant_id)
-    end
+  def discounts(item)
+    Discount.where(merchant_id: item.merchant_id)
   end
 
   def discount_applies
     @contents.any? do |item_id|
       has_discount(Item.find_by(id: item_id))
     end
+  end
+
+  def best_discount(item)
+    if discounts(item).all? {|discount| discount.item_quantity <=  items[item]}
+      Discount.find_by(percentage_discount: discounts(item).best_discount)
+    else
+      discounts(item).where('item_quantity <= ?', items[item]).first
+    end
+  end
+
+  def discount_price(item)
+    return item.price if !has_discount(item)
+    item.price * (1 - best_discount(item).percentage_discount.to_f / 100 )
   end
 end
