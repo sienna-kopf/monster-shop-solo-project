@@ -18,7 +18,7 @@ class OrdersController <ApplicationController
           order.item_orders.create({
             item: item,
             quantity: quantity,
-            price: item.discount_price,
+            price: cart.discount_price(item),
             merchant_id: item_to_pull.merchant_id
             })
         else
