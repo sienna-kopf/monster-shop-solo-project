@@ -14,16 +14,17 @@ RSpec.describe Cart do
         })
 
       @off_2 = Discount.create(percentage_discount: 10, item_quantity: 2, merchant_id: @megan.id)
+      @off_20_for_2 = Discount.create(percentage_discount: 20, item_quantity: 2, merchant_id: @megan.id)
     end
 
-    it '.contents' do
+    it '#contents' do
       expect(@cart.contents).to eq({
         @ogre.id.to_s => 1,
         @giant.id.to_s => 2
         })
     end
 
-    it '.add_item()' do
+    it '#add_item()' do
       @cart.add_item(@hippo.id.to_s)
 
       expect(@cart.contents).to eq({
@@ -37,37 +38,45 @@ RSpec.describe Cart do
       expect(@cart.add_item(@ogre.id.to_s)).to eq(2)
     end
 
-    it '.total_items' do
+    it '#total_items' do
       expect(@cart.total_items).to eq(3)
     end
 
-    it '.items' do
+    it '#items' do
       expect(@cart.items).to eq({@ogre => 1, @giant => 2})
     end
 
-    it '.total' do
+    it '#total' do
       expect(@cart.total).to eq(120)
     end
 
-    it '.subtotal()' do
+    it '#subtotal()' do
       expect(@cart.subtotal(@ogre)).to eq(20)
       expect(@cart.subtotal(@giant)).to eq(100)
     end
 
-    it '.discount_total' do
-      expect(@cart.discount_total).to eq(110)
+    it '#discount_total' do
+      expect(@cart.discount_total).to eq(100)
     end
 
-    it '.has_discount(item)' do
+    it '#has_discount(item)' do
       expect(@cart.has_discount(@giant)).to eq(true)
     end
 
-    it '.discount' do
-      expect(@cart.discount(@giant)).to eq(@off_2)
+    it '#discounts' do
+      expect(@cart.discounts(@giant)).to eq([@off_2, @off_20_for_2])
     end
 
-    it '.discount_applies' do
+    it '#discount_applies' do
       expect(@cart.discount_applies).to eq(true)
+    end
+
+    it '#best_discount' do
+      expect(@cart.best_discount(@giant)).to eq(@off_20_for_2)
+    end
+
+    it "#discount_price(item)" do
+      expect(@cart.discount_price(@giant)).to eq(40)
     end
   end
 end
