@@ -36,4 +36,10 @@ class Item <ApplicationRecord
   def quantity_ordered
     item_orders.sum(:quantity)
   end
+
+  def discount_price
+    return price if Discount.find_by(merchant_id: self.merchant_id).nil?
+    discount = Discount.find_by(merchant_id: self.merchant_id)
+    price * (1 - discount.percentage_discount.to_f / 100 )
+  end
 end
