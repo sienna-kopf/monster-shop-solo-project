@@ -57,5 +57,17 @@ RSpec.describe Cart do
     it '.discount_total' do
       expect(@cart.discount_total).to eq(110)
     end
+
+    it '.has_discount(item)' do
+      expect(@cart.has_discount(@giant)).to eq(true)
+    end
+
+    it '.discount' do
+      expect(@cart.discount(@giant)).to eq(@off_2)
+    end
+
+    it '.discount_applies' do
+      expect(@cart.discount_applies).to eq(true)
+    end
   end
 end

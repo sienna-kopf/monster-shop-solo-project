@@ -28,6 +28,8 @@ describe Item, type: :model do
       @review_3 = @chain.reviews.create(title: "Meh place", content: "They have meh bike stuff and I probably won't come back", rating: 1)
       @review_4 = @chain.reviews.create(title: "Not too impressed", content: "v basic bike shop", rating: 2)
       @review_5 = @chain.reviews.create(title: "Okay place :/", content: "Brian's cool and all but just an okay selection of items", rating: 3)
+
+      @off_2 = Discount.create(percentage_discount: 10, item_quantity: 2, merchant_id: @bike_shop.id)
     end
 
     it "calculate average review" do
@@ -56,13 +58,20 @@ describe Item, type: :model do
 
       order_1.item_orders.create!(item: @chain, price: @chain.price, quantity: 3)
 
-      user_2 = User.create(name: "Tim", address: "123 North st", city: "Denver", state: "Colorado", zip: "80401", email: "1234gmail.com", password: "password", role: 1)
-
       order_2 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, status: "pending", user_id: user_1.id)
 
       order_2.item_orders.create!(item: @chain, price: @chain.price, quantity: 1)
 
       expect(@chain.quantity_ordered).to eq(4)
+    end
+
+    it 'discount_price' do
+      expect(@chain.price).to eq(50)
+
+      @order_1 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, user_id: @user.id)
+      @order_1.item_orders.create!(item: @chain, price: @chain.price, quantity: 2)
+
+      expect(@chain.discount_price).to eq(45)
     end
   end
 

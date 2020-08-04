@@ -9,11 +9,17 @@
 Merchant.destroy_all
 Item.destroy_all
 User.destroy_all
+Discount.destroy_all
 
 #merchants
 merchant_1 = Merchant.create(name: "Meg's Paper Shop", address: '123 Paper Rd.', city: 'Denver', state: 'CO', zip: 80203)
 merchant_2 = Merchant.create(name: "Joe's Tire Shop", address: '123 Tire Rd.', city: 'Salt Lake City', state: 'UT', zip: 80444)
 merchant_3 = Merchant.create(name: "Brian's Dog Shop", address: '125 Doggo St.', city: 'Orange County', state: 'CA', zip: 80200)
+
+#discounts
+off_5 = Discount.create(percentage_discount: 5, item_quantity: 5, merchant_id: merchant_3.id)
+
+off_10 = Discount.create(percentage_discount: 10, item_quantity: 10, merchant_id: merchant_3.id)
 
 #paper_shop_items
 paper = merchant_1.items.create(name: "Lined Paper", description: "Great for writing on!", price: 20, image: "https://cdn.vertex42.com/WordTemplates/images/printable-lined-paper-wide-ruled.png", inventory: 35)
