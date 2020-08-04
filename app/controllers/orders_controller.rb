@@ -14,12 +14,21 @@ class OrdersController <ApplicationController
         new_quantity = (item.inventory - quantity)
         item_to_pull = Item.find(item.id)
         item_to_pull.update(inventory: new_quantity)
-        order.item_orders.create({
-          item: item,
-          quantity: quantity,
-          price: item.price,
-          merchant_id: item_to_pull.merchant_id
-          })
+        if cart.has_discount(item)
+          order.item_orders.create({
+            item: item,
+            quantity: quantity,
+            price: item.discount_price,
+            merchant_id: item_to_pull.merchant_id
+            })
+        else
+          order.item_orders.create({
+            item: item,
+            quantity: quantity,
+            price: item.price,
+            merchant_id: item_to_pull.merchant_id
+            })
+        end
       end
       session.delete(:cart)
       flash[:success] = "Your order was created!"
