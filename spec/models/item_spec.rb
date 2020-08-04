@@ -64,15 +64,6 @@ describe Item, type: :model do
 
       expect(@chain.quantity_ordered).to eq(4)
     end
-
-    it 'discount_price' do
-      expect(@chain.price).to eq(50)
-
-      @order_1 = Order.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033, user_id: @user.id)
-      @order_1.item_orders.create!(item: @chain, price: @chain.price, quantity: 2)
-
-      expect(@chain.discount_price).to eq(45)
-    end
   end
 
   describe "class methods" do
