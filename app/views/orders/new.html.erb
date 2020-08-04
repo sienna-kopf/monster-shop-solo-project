@@ -11,15 +11,33 @@
   <% cart.items.each do |item, quantity| %>
     <tr id='order-item-<%= item.id%>'>
       <td><h2><%= link_to item.name, "/items/#{item.id}" %></h2></td>
-      <td><p><%= number_to_currency(item.price) %></p></td>
+      <% if cart.has_discount(item) %>
+        <td>
+          <p><%= number_to_currency(item.discount_price)%></p>
+          <p>Item price has been adjusted due to discount!</p>
+        </td>
+      <% else %>
+        <td><p><%= number_to_currency(item.price) %></p></td>
+      <% end %>
       <td><p><%= quantity %></p></td>
-      <td><p><%= number_to_currency(cart.subtotal(item)) %></p><td>
+      <% if cart.has_discount(item) %>
+        <p>Discount of <%= cart.discount(item).percentage_discount %>% off <%= cart.discount(item).item_quantity %> items has been applied to <%= item.name %></p>
+        <p><%=number_to_currency(cart.discount_subtotal(item))%></p>
+      <% else %>
+        <td>
+          <p><%=number_to_currency(cart.subtotal(item))%></p>
+        </td>
+      <% end %>
       <td><p><%= link_to item.merchant.name, "/merchants/#{item.merchant_id}" %></p></td>
       <td><p><%= item.inventory %> in stock</p></td>
     </tr>
   <% end %>
 </table>
-<h3 align = "right">Total: <%= number_to_currency(cart.total)%></h3>
+<% if cart.discount_applies %>
+  <h3 align = "right">Total: <%= number_to_currency(cart.discount_total)%></h3>
+<% else %>
+  <h3 align = "right">Total: <%= number_to_currency(cart.total)%></h3>
+<% end  %>
 <center>
   <% if current_user == nil %>
     <p>You must be a registered user to checkout!</p>
