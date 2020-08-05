@@ -63,11 +63,15 @@ class Cart
   end
 
   def best_discount(item)
-    if discounts(item).all? {|discount| discount.item_quantity <=  items[item]}
-      Discount.find_by(percentage_discount: discounts(item).best_discount)
-    else
-      discounts(item).where('item_quantity <= ?', items[item]).first
-    end
+    # if discounts(item).all? {|discount| discount.item_quantity <=  items[item]}
+    #   Discount.find_by(percentage_discount: discounts(item).best_discount)
+    # else
+    #   discounts(item).where('item_quantity <= ?', items[item]).first
+    # end
+
+    ## Use a little bit more active record
+
+    discounts(item).where('item_quantity <= ?', items[item]).order(percentage_discount: :desc).limit(1).first
   end
 
   def discount_price(item)

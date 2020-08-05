@@ -55,6 +55,10 @@ RSpec.describe Cart do
       expect(@cart.subtotal(@giant)).to eq(100)
     end
 
+    it "#.discount_subtotal" do
+      expect(@cart.discount_subtotal(@giant)).to eq(80)
+    end
+
     it '#discount_total' do
       expect(@cart.discount_total).to eq(100)
     end

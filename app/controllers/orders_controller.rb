@@ -7,6 +7,9 @@ class OrdersController <ApplicationController
   end
 
   def create
+    ## make cart.create_orders method. Put into cart class and call from here.
+    ## multiple ways to do this. 
+
     user = User.find(current_user.id)
     order = user.orders.create(order_params)
     if order.save
