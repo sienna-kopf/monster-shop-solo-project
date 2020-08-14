@@ -20,7 +20,7 @@ class Merchant::ItemsController < Merchant::BaseController
     end
   end
 
-  def delete
+  def destroy
     ## add conditional logic here to make sure it cant be deleted
     item = Item.find(params[:id])
     item.delete

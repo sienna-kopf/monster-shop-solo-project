@@ -16,7 +16,7 @@
       <p> Quantity Ordered: <%= item_order.quantity %></p>
       <p> Item Price: <%= item.price %> </p>
       <% if (item_order.quantity <= item.inventory) && (item_order.status == "nil") %>
-        <%= link_to "Fulfill Order", "/merchant/orders/#{@order.id}/items/#{item.id}/update", method: :patch  %>
+        <%= link_to "Fulfill Order", "/merchant/orders/#{@order.id}/items/#{item.id}", method: :patch  %>
       <% elsif (item_order.quantity > item.inventory) && (item_order.status == "nil") %>
         <p>Can not fulfill order due to lack of inventory.</p>
       <% else %>

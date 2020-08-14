@@ -46,7 +46,7 @@
 </section>
 <section id="cancelorder">
   <% if @order.status != "shipped" %>
-  <p> <%= link_to "Cancel Order", "/orders/#{@order.id}/update"%></p></td>
+  <p> <%= link_to "Cancel Order", "/orders/#{@order.id}", method: :patch %></p></td>
   <% end %>
 </section>
 <section id="datecreated">
